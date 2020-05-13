@@ -33,6 +33,7 @@ public interface Permission {
     String DEPT = "dept";
     String DEPT_EDIT = "deptEdit";
     String DEPT_DEL = "deptDelete";
+    String VISITOR = "visitor";
 
     //消息管理
     String MSG = "msg";

@@ -5,13 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.enilu</groupId>
-    <artifactId>web-flash</artifactId>
+    <artifactId>backend</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>flash-api</module>
-        <module>flash-core</module>
-        <module>flash-generator</module>
+        <module>backend-api</module>
+        <module>backend-core</module>
     </modules>
 
     <properties>
