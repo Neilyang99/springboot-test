@@ -8,5 +8,5 @@ import cn.enilu.flash.dao.BaseRepository;
 
 public interface VisitorDao extends BaseRepository<Visitor, Long>{
 
-	 List findByVisitorName(String visitorName);
+	 List<Visitor> findByVisitorName(String name);
 }

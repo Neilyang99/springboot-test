@@ -43,7 +43,7 @@
         <velocity.version>1.7</velocity.version>
         <quartz.version>2.2.1</quartz.version>
         <ehcache.version>3.3.1</ehcache.version>
-        <ehcache.core.version>2.6.11</ehcache.core.version>
+        <ehcache.core.version>2.4.8</ehcache.core.version>
         <zxing.version>3.2.1</zxing.version>
         <swagger.version>2.2.2</swagger.version>
         <commons.io.version>2.5</commons.io.version>
@@ -302,7 +302,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
