@@ -14,7 +14,7 @@ import cn.enilu.flash.service.message.sms.SmsSender;
 import cn.enilu.flash.utils.StringUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.nutz.lang.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -10,7 +10,7 @@
     <packaging>war</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>backend-api</artifactId>
+    <artifactId>flash-api</artifactId>
 
     <dependencies>
         <dependency>
