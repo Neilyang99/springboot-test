@@ -1,4 +1,4 @@
-package com.eis.api.controller.sales;
+package cn.enilu.flash.api.controller.sales;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.enumeration.Permission;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.utils.StringUtil;
-import com.eis.service.sales.VisitorService;
+import cn.enilu.flash.service.sales.VisitorService;
 
 
 @RestController
@@ -20,7 +20,7 @@ public class VisitorController  extends BaseController {
     private VisitorService visitorService;
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-    @RequiresPermissions(value = {Permission.VISITOR})
+    //@RequiresPermissions(value = {Permission.VISITOR})
 	public Object list(String name) {
 		if(StringUtil.isNullOrEmpty(name)) {
 			return Rets.success(visitorService.queryAll());

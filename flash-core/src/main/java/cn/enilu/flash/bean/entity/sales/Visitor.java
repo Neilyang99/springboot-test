@@ -1,4 +1,4 @@
-package com.eis.bean.entity.sales;
+package cn.enilu.flash.bean.entity.sales;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

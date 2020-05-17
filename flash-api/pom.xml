@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.enilu</groupId>
-            <artifactId>backend-core</artifactId>
+            <artifactId>flash-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
