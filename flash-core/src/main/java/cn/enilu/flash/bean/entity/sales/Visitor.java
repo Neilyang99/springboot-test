@@ -18,10 +18,10 @@ import lombok.Data;
 public class Visitor extends BaseEntity {
 	
 	@Column
-	private Integer sla10001;
+	private String sla10002;
 	
 	@Column
-	private String sla10002;
+	private String sla10003;
 
 	@Column
 	private String sla10004;
@@ -34,13 +34,89 @@ public class Visitor extends BaseEntity {
 	private String sla10006;
 	
 	@Column
-	@NotBlank(message = "電話不能為空白")
+	private String sla10007;
+	
+	@Column
+	private String sla10008;
+	
+	@Column
 	private String sla10009;
+	
+	@Column
+	@NotBlank(message = "行動電話不能為空白")
+	private String sla10010;
+	
+	@Column
+	private String sla10011;
+	
+	@Column
+	private String sla10012;
 	
 	@Column
 	private String sla10013;
 	
 	@Column
 	private String sla10014;
+	
+	@Column
+	private String sla10015;
+	
+	@Column
+	private String sla10016;
+	
+	@Column
+	private String sla10017;
+	
+	@Column
+	private String sla10018;
+	
+	@Column
+	private String sla10019;
+	
+	@Column
+	private String sla10020;
+	
+	@Column
+	private String sla10021;
+	
+	@Column
+	private String sla10022;
+	
+	@Column
+	private String sla10023;
+	
+	@Column
+	private String sla10024;
+	
+	@Column
+	private String sla10025;
+	
+	@Column
+	private String sla10026;
+	
+	@Column
+	private String sla10027;
+	
+	@Column
+	private String sla10028;
+	
+	@Column
+	private String sla10029;
+	
+	@Column
+	private String sla10030;
+
+	@Column
+	private String sla10031;
+
+	@Column
+	private String sla10032;
+
+	@Column
+	private String sla10033;
+
+	@Column
+	private String sla10034;
+
 	
 }

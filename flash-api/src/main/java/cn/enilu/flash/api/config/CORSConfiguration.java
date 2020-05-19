@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author enilu
  * @version 2018-07-25
  */
+@SuppressWarnings("deprecation")
 @Configuration
 public class CORSConfiguration {
     @Bean

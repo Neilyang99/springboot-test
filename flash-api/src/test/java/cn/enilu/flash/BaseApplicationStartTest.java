@@ -2,6 +2,8 @@ package cn.enilu.flash;
 
 import cn.enilu.flash.api.ApiApplication;
 import cn.enilu.flash.dao.BaseRepositoryFactoryBean;
+import cn.enilu.flash.service.sales.VisitorServiceTest;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,7 +34,7 @@ public class BaseApplicationStartTest {
 
     @Test
     public void makeTestPass() {
-
+    	System.out.println("Test ------------");
     }
 
 }

@@ -11,6 +11,8 @@ public interface VisitorDao extends BaseRepository<Visitor, Long>{
 
 	 //List<Visitor> findByVisitorName(String name);
 	
-	@Query(value= "select * from sla10")
-	List<Visitor> findAll();
+	//@Query(value = "select id,sla10002,sla10004,sla10005,sla10006,sla10009,sla10013,sla10014 from sla10 where sla10006 like ?1", nativeQuery = true)
+	List<Visitor> findBySla10006(String name);
+	
+	
 }

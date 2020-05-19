@@ -17,7 +17,8 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorDao>{
 	@Autowired
 	private VisitorDao visitorDao;
 	
-	public List<Visitor> findByVisitorName(String name){
-		return visitorDao.findAll();
+	public List<Visitor> findBySla10006(String name){
+		System.out.println("find visitor name AVVVA -----------");
+		return visitorDao.findBySla10006(name);
 	}
 }
