@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.enilu.flash.bean.entity.sales.Visitor;
-import cn.enilu.flash.dao.sales.VisitorDao;
+import cn.enilu.flash.dao.sales.VisitorRepository;
 import cn.enilu.flash.service.BaseService;
 
 @Service
-public class VisitorService extends BaseService<Visitor,Long,VisitorDao>{
+public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 	private static final Logger logger = LoggerFactory.getLogger(VisitorService.class);
 	@Autowired
-	private VisitorDao visitorDao;
+	private VisitorRepository visitorDao;
 	
 	public List<Visitor> findBySla10006(String name){
 		System.out.println("find visitor name AVVVA -----------");
