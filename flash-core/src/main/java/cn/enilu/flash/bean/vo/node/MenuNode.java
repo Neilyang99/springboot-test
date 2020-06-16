@@ -203,7 +203,7 @@ public class MenuNode implements Comparable {
     }
 
     public String getStatusName() {
-        return status == 1 ?"启用":"禁用";
+        return status == 1 ?"啟用":"禁用";
     }
 
     public void setStatusName(String statusName) {
