@@ -55,6 +55,23 @@ public class ConstantFactory implements IConstantFactory {
         cache.put(key, val);
 
     }
+    
+    /**
+     * YWG
+     * 根據字典名稱與KEY取得對應的值
+     * @param dictName
+     * @param dictKey
+     * @return
+     */
+    public String findByPnameAndCode(String dictName, String dictKey) {
+    	List<DictVo> dictList = this.findByDictName(dictName);
+    	for(DictVo vo : dictList) {
+    		if(vo.getKey().equals(dictKey)) {
+    			return vo.getValue();
+    		}
+    	}
+    	return "";
+    }
 
     /**
      * 根据用户id获取用户名称

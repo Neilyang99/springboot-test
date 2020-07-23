@@ -1,3 +1,5 @@
+CREATE SCHEMA `eis` DEFAULT CHARACTER SET utf8 ;
+
 
 
 -- ----------------------------
