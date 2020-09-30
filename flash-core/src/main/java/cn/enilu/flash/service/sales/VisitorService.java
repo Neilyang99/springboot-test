@@ -21,4 +21,8 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 		System.out.println("find visitor name AVVVA -----------");
 		return visitorDao.findBySla10006(name);
 	}
+	
+	public List<Object[]> queryGridList(){
+		return visitorDao.queryGridList();
+	}
 }
