@@ -8,7 +8,7 @@ package cn.enilu.flash.bean.constant.state;
  */
 public enum ManagerStatus {
 
-    OK(1, "启用"), FREEZED(2, "冻结"), DELETED(3, "被删除");
+    OK(1, "啟用"), FREEZED(2, "凍結"), DELETED(3, "被删除");
 
     int code;
     String message;

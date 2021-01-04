@@ -12,38 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.constant.factory.PageFactory;
-import cn.enilu.flash.bean.entity.sales.Sla00;
+import cn.enilu.flash.bean.entity.sales.Sla01;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
-import cn.enilu.flash.service.sales.Sla00Service;
+import cn.enilu.flash.service.sales.Sla01Service;
 import cn.enilu.flash.utils.BeanUtil;
-import cn.enilu.flash.utils.DateUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
 import cn.enilu.flash.warpper.UserWarpper;
 
 
 @RestController
-@RequestMapping("/sla00")
-public class Sla00Controller extends BaseController{
+@RequestMapping("/sla01")
+public class Sla01Controller extends BaseController{
 
 	@Autowired
-    private Sla00Service sla00Service;
+    private Sla01Service sla01Service;
 	
-	@RequestMapping(value = "/selectList",method = RequestMethod.GET)
-	public Object selectList() {
-		return Rets.success(sla00Service.queryAll());
-	}
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String name) {
-		Page<Sla00> page = new PageFactory<Sla00>().defaultPage();
-		if(StringUtil.isNullOrEmpty(name)) {
+	public Object list(String house) {
+		Page<Sla01> page = new PageFactory<Sla01>().defaultPage();
+		if(StringUtil.isNullOrEmpty(house)) {
 			
 		}else {
-			page.addFilter( "sla00003", SearchFilter.Operator.LIKE, name);
+			page.addFilter( "sla01005", SearchFilter.Operator.LIKE, house);
 		}
-		page = sla00Service.queryPage(page);
+		page = sla01Service.queryPage(page);
 		List list = (List) new UserWarpper(BeanUtil.objectsToMaps(page.getRecords())).warp();
         page.setRecords(list);
         
@@ -51,12 +46,12 @@ public class Sla00Controller extends BaseController{
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public Object add(@ModelAttribute @Valid Sla00 sla00) {
-		if(sla00.getId() == null) {
-			sla00Service.insert(sla00);
+	public Object add(@ModelAttribute @Valid Sla01 sla01) {
+		if(sla01.getId() == null) {
+			sla01Service.insert(sla01);
 		}else {
 			
-			sla00Service.update(sla00);
+			sla01Service.update(sla01);
 		}
 		
 		return Rets.success();
@@ -64,22 +59,7 @@ public class Sla00Controller extends BaseController{
 	
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id) {
-		sla00Service.delete(id);
-        return Rets.success();
-    }
-	
-	@RequestMapping(value="/startToSale",method = RequestMethod.GET)
-    public Object startToSale(Long id,String status) {
-		Sla00 sla00 = sla00Service.get(id);
-		sla00.setSla00041(status);
-		if(status.equals("Y")) {
-			sla00.setSla00008(DateUtil.getDays());//開始銷售
-		}else if(status.equals("S")) {//完銷
-			sla00.setSla00009(DateUtil.getDays());
-		}
-		sla00.setSla00041(status);
-		sla00Service.update(sla00);
-		
+		sla01Service.delete(id);
         return Rets.success();
     }
 	

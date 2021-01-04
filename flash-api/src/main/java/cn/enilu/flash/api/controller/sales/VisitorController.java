@@ -13,13 +13,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
+import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.sales.Sla00;
 import cn.enilu.flash.bean.entity.sales.Sla11;
 import cn.enilu.flash.bean.entity.sales.Visitor;
 import cn.enilu.flash.bean.enumeration.Permission;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.sales.Sla10Vo;
+import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
+import cn.enilu.flash.utils.factory.Page;
+import cn.enilu.flash.warpper.UserWarpper;
 import cn.enilu.flash.service.sales.Sla00Service;
 import cn.enilu.flash.service.sales.VisitorService;
 
@@ -51,6 +55,8 @@ public class VisitorController  extends BaseController {
 //				list.add(visitor);
 //			}
 			
+			Page<Visitor> page = new PageFactory<Visitor>().defaultPage();
+			
 			List<Sla10Vo> list = new ArrayList<Sla10Vo>();
 			
 			List<Object[]> obj = visitorService.queryGridList();
@@ -70,7 +76,12 @@ public class VisitorController  extends BaseController {
 				list.add(sla10Vo);
 			}
 			
-			return Rets.success(list);
+			page = visitorService.queryPage(page);
+			List listPage = (List) new UserWarpper(BeanUtil.objectsToMaps(page.getRecords())).warp();
+			
+			page.setRecords(listPage);
+			
+			return Rets.success(page);
 		}else {
 			return Rets.success(visitorService.findBySla10006(name));
 		}
@@ -87,4 +98,10 @@ public class VisitorController  extends BaseController {
 		
 		return Rets.success();
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE)
+    public Object remove(Long id) {
+		visitorService.delete(id);
+        return Rets.success();
+    }
 }

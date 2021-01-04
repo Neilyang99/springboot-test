@@ -16,6 +16,10 @@ import lombok.Data;
 @EntityListeners(AuditingEntityListener.class)
 public class Sla11 extends BaseEntity {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2559909677124382892L;
 	@Column
 	private String sla11002;
 	@Column
