@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class Sla11Vo {
-	
+	private Long id;
 	private String sla11002;
 	private String sla11003;
 	private String sla11003Name;

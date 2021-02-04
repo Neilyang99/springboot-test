@@ -3,7 +3,10 @@ package cn.enilu.flash.api.controller.sales;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +35,7 @@ public class Sla11Controller extends BaseController{
 			List<Sla11> list = sla11Service.queryAll();
 			for(Sla11 sla11 : list) {
 				Sla11Vo sla11Vo = new Sla11Vo();
+				sla11Vo.setId(sla11.getId());
 				sla11Vo.setSla11002(sla11.getSla11002());
 				sla11Vo.setSla11003(sla11.getSla11003());
 				sla11Vo.setSla11004(sla11.getSla11004());
@@ -61,6 +65,7 @@ public class Sla11Controller extends BaseController{
 			
 			for(Sla11 sla11 : list) {
 				Sla11Vo sla11Vo = new Sla11Vo();
+				sla11Vo.setId(sla11.getId());
 				sla11Vo.setSla11002(sla11.getSla11002());
 				sla11Vo.setSla11003(sla11.getSla11003());
 				sla11Vo.setSla11004(sla11.getSla11004());
@@ -84,6 +89,34 @@ public class Sla11Controller extends BaseController{
 		}
 	}
 	
+	/**
+	 * 取得洽詢類別清單
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla11003",method = RequestMethod.GET)
+	public Object getSla11003() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("洽詢類別");
+		
+		return Rets.success(dictList);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public Object add(@ModelAttribute @Valid Sla11 sla11) {
+		if(sla11.getId() == null) {
+			sla11Service.insert(sla11);
+		}else {
+			
+			sla11Service.update(sla11);
+		}
+		
+		return Rets.success();
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE)
+    public Object remove(Long id) {
+		sla11Service.delete(id);
+        return Rets.success();
+    }
 	
 	
 }
