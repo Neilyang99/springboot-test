@@ -1,5 +1,6 @@
 package cn.enilu.flash.api.controller.sales;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,15 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
-import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.sales.Sla01;
+import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
-import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.bean.vo.sales.Sla01Vo;
 import cn.enilu.flash.service.sales.Sla01Service;
-import cn.enilu.flash.utils.BeanUtil;
-import cn.enilu.flash.utils.StringUtil;
-import cn.enilu.flash.utils.factory.Page;
-import cn.enilu.flash.warpper.UserWarpper;
+import cn.enilu.flash.service.system.impl.ConstantFactory;
 
 
 @RestController
@@ -31,18 +29,68 @@ public class Sla01Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String house) {
-		Page<Sla01> page = new PageFactory<Sla01>().defaultPage();
-		if(StringUtil.isNullOrEmpty(house)) {
+	public Object list(Integer sla01002) {
+		
+		List<Sla01Vo> volist = new ArrayList<Sla01Vo>();
+		
+		List<Sla01> list = sla01Service.findBySla01002(sla01002);
+		for(Sla01 sla01 : list) {
+			Sla01Vo sla01Vo = new Sla01Vo();
+			sla01Vo.setId(sla01.getId().intValue());
+			sla01Vo.setSla01002(sla01.getSla01002());
+			sla01Vo.setSla01003(sla01.getSla01003());
+			sla01Vo.setSla01004(sla01.getSla01004());
+			sla01Vo.setSla01005(sla01.getSla01005());
+			sla01Vo.setSla01006(sla01.getSla01006());
+			sla01Vo.setSla01007(sla01.getSla01007());
+			sla01Vo.setSla01008(sla01.getSla01008());
+			sla01Vo.setSla01009(sla01.getSla01009());
+			sla01Vo.setSla01010(sla01.getSla01010());
+			sla01Vo.setSla01011(sla01.getSla01011());
+			sla01Vo.setSla01012(sla01.getSla01012());
+			sla01Vo.setSla01013(sla01.getSla01013());
+			sla01Vo.setSla01014(sla01.getSla01014());
+			sla01Vo.setSla01015(sla01.getSla01015());
 			
-		}else {
-			page.addFilter( "sla01005", SearchFilter.Operator.LIKE, house);
+			sla01Vo.setSla01007Name(ConstantFactory.me().getDictsByName("屋型", sla01.getSla01007()));
+			sla01Vo.setSla01008Name(ConstantFactory.me().getDictsByName("格局", sla01.getSla01008()));
+			
+			volist.add(sla01Vo);
+			
 		}
-		page = sla01Service.queryPage(page);
-		List list = (List) new UserWarpper(BeanUtil.objectsToMaps(page.getRecords())).warp();
-        page.setRecords(list);
-        
-		return Rets.success(page);
+		
+		return Rets.success(volist);
+	}
+	
+	/**
+	 * 取得屋型
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla01007",method = RequestMethod.GET)
+	public Object getSla01007() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("屋型");
+		
+		return Rets.success(dictList);
+	}
+	/**
+	 * 取得格局
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla01008",method = RequestMethod.GET)
+	public Object getSla01008() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("格局");
+		
+		return Rets.success(dictList);
+	}
+	/**
+	 * 取得車位類別
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla01015",method = RequestMethod.GET)
+	public Object getSla01015() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("車位類別");
+		
+		return Rets.success(dictList);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

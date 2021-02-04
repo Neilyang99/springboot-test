@@ -31,7 +31,6 @@ public class Sla11Controller extends BaseController{
 	public Object list(String visitorId) {
 		if(StringUtil.isNullOrEmpty(visitorId)) {
 			List<Sla11Vo> sla11VoList = new ArrayList<Sla11Vo>();
-			List<DictVo> dictList = ConstantFactory.me().findByDictName("洽詢類別");
 			List<Sla11> list = sla11Service.queryAll();
 			for(Sla11 sla11 : list) {
 				Sla11Vo sla11Vo = new Sla11Vo();
@@ -44,13 +43,7 @@ public class Sla11Controller extends BaseController{
 				sla11Vo.setSla11007(sla11.getSla11007());
 				sla11Vo.setSla11008(sla11.getSla11008());
 				sla11Vo.setSla11009(sla11.getSla11009());
-				
-				for(DictVo vo : dictList) {
-					if(vo.getKey().equals(sla11.getSla11003())) {
-						sla11Vo.setSla11003Name(vo.getValue());
-						break;
-					}
-				}
+				sla11Vo.setSla11003Name(ConstantFactory.me().getDictsByName("洽詢類別",sla11.getSla11003()));
 				
 				sla11VoList.add(sla11Vo);
 			}
@@ -60,7 +53,6 @@ public class Sla11Controller extends BaseController{
 			//TODO: maybe have good way to define wrap value
 			
 			List<Sla11Vo> sla11VoList = new ArrayList<Sla11Vo>();
-			List<DictVo> dictList = ConstantFactory.me().findByDictName("洽詢類別");
 			List<Sla11> list = sla11Service.findByVisitId(visitorId);
 			
 			for(Sla11 sla11 : list) {
@@ -74,13 +66,8 @@ public class Sla11Controller extends BaseController{
 				sla11Vo.setSla11007(sla11.getSla11007());
 				sla11Vo.setSla11008(sla11.getSla11008());
 				sla11Vo.setSla11009(sla11.getSla11009());
+				sla11Vo.setSla11003Name(ConstantFactory.me().getDictsByName("洽詢類別",sla11.getSla11003()));
 				
-				for(DictVo vo : dictList) {
-					if(vo.getKey().equals(sla11.getSla11003())) {
-						sla11Vo.setSla11003Name(vo.getValue());
-						break;
-					}
-				}
 				
 				sla11VoList.add(sla11Vo);
 			}
