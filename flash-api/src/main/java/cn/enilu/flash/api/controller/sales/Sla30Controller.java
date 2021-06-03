@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.sales.Sla30;
+import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.sales.Sla30Service;
+import cn.enilu.flash.service.system.impl.ConstantFactory;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
@@ -62,6 +64,28 @@ public class Sla30Controller extends BaseController{
 		sla30Service.delete(id);
         return Rets.success();
     }
+	
+	/**
+	 * 取得行政區
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla30005",method = RequestMethod.GET)
+	public Object getSla30005() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("行政區選項");
+		
+		return Rets.success(dictList);
+	}
+	
+	/**
+	 * 取得個案進度
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla30084",method = RequestMethod.GET)
+	public Object getSla30084() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("個案進度");
+		
+		return Rets.success(dictList);
+	}
 	
 	
 }
