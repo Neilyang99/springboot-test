@@ -23,5 +23,8 @@ public class Sla01Vo {
 	private String sla01014; //地址
 	private String sla01015; //車位類別
 	private String sla01015Name;
+	private String sla01027;
+	private String sla01027Name;
+	private String sla01033;
 
 }

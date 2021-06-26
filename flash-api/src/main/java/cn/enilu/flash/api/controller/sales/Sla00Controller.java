@@ -53,7 +53,13 @@ public class Sla00Controller extends BaseController{
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla00 sla00) {
 		if(sla00.getId() == null) {
-			sla00Service.insert(sla00);
+			Sla00 house = sla00Service.findByBuildingCode(sla00.getSla00002());
+			if(house == null) {
+				sla00Service.insert(sla00);
+			}else {
+				return Rets.failure("銷售案代號重複。");
+			}
+			
 		}else {
 			
 			sla00Service.update(sla00);

@@ -51,9 +51,12 @@ public class Sla01Controller extends BaseController{
 			sla01Vo.setSla01013(sla01.getSla01013());
 			sla01Vo.setSla01014(sla01.getSla01014());
 			sla01Vo.setSla01015(sla01.getSla01015());
+			sla01Vo.setSla01027(sla01.getSla01027());
+			sla01Vo.setSla01033(sla01.getSla01033());
 			
 			sla01Vo.setSla01007Name(ConstantFactory.me().getDictsByName("屋型", sla01.getSla01007()));
 			sla01Vo.setSla01008Name(ConstantFactory.me().getDictsByName("格局", sla01.getSla01008()));
+			sla01Vo.setSla01027Name(ConstantFactory.me().getDictsByName("房屋銷售狀態", sla01.getSla01027()));
 			
 			volist.add(sla01Vo);
 			

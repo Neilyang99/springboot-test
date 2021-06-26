@@ -16,11 +16,6 @@ import lombok.Data;
 @EntityListeners(AuditingEntityListener.class)
 public class Sla30 extends BaseEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4861203534917509625L;
-
 	@Column
 	private String sla30002; //填表日期
 	private String sla30003; //填寫人工號

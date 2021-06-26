@@ -21,7 +21,7 @@ public class Sla00 extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -4861203534917509625L;
 
-	@Column
+	@Column(unique = true)
 	private String sla00002;//房屋銷售案代號
 	
 	@Column

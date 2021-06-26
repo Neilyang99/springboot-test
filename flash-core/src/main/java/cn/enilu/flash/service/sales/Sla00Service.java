@@ -1,5 +1,7 @@
 package cn.enilu.flash.service.sales;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +18,9 @@ public class Sla00Service extends BaseService<Sla00,Long,Sla00Repository>{
 	public Sla00 findByBuildingCode(String code) {
 		return sla00Repository.findBySla00002(code);
 	}
+
+	public List<Sla00> findOnSaleCase(){
+		return sla00Repository.findOnSaleCase();
+	}
+	
 }
