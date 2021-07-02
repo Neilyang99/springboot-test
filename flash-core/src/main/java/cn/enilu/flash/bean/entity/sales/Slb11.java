@@ -27,8 +27,8 @@ public class Slb11 extends BaseEntity {
 	private String slb11003; //成交編號
 	private String slb11004; //棟別
 	private String slb11005; //戶號
-	private String slb11006; //總金額
-	private String slb11007; //定金金額
+	private Integer slb11006; //總金額
+	private Integer slb11007; //定金金額
 	private String slb11008; //備註
 	private String slb11009; //資料狀態
 	private Long slb11010; //棟別唯一識別碼

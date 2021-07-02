@@ -28,8 +28,15 @@ public class Slb10Service extends BaseService<Slb10,Long,Slb10Repository>{
 		return this.slb10Repository.updateAmountById(id);
 	}
 	
+	public int updateCountAmountById(Long id, String cntField, String amtField) {
+		return this.slb10Repository.updateCountAmountById(id, cntField, amtField);
+	}
+	
 	public int updateTotalAmountByIdAndProjectNo(Long id, String projectNo) {
 		return this.slb10Repository.updateTotalAmountByIdAndProjectNo(id, projectNo);
 	}
 	
+	public int updateAgainCountById(Long id) {
+		return this.slb10Repository.updateAgainCountById(id);
+	}
 }

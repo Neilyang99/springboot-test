@@ -1,6 +1,5 @@
 package cn.enilu.flash.api.controller.sales;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,30 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
-import cn.enilu.flash.bean.constant.factory.PageFactory;
-import cn.enilu.flash.bean.entity.sales.Sla01;
-import cn.enilu.flash.bean.entity.sales.Slb10;
-import cn.enilu.flash.bean.entity.sales.Slb11;
-import cn.enilu.flash.bean.vo.DictVo;
+import cn.enilu.flash.bean.entity.sales.Slb16;
 import cn.enilu.flash.bean.vo.front.Rets;
-import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.service.sales.Sla01Service;
 import cn.enilu.flash.service.sales.Slb10Service;
-import cn.enilu.flash.service.sales.Slb11Service;
-import cn.enilu.flash.service.system.impl.ConstantFactory;
-import cn.enilu.flash.utils.BeanUtil;
-import cn.enilu.flash.utils.StringUtil;
-import cn.enilu.flash.utils.factory.Page;
-import cn.enilu.flash.warpper.UserWarpper;
+import cn.enilu.flash.service.sales.Slb16Service;
 
 
 @RestController
-@RequestMapping("/slb11")
-public class Slb11Controller extends BaseController{
+@RequestMapping("/slb16")
+public class Slb16Controller extends BaseController{
 
 	@Autowired
-    private Slb11Service slb11Service;
+    private Slb16Service slb16Service;
 	
 	@Autowired
     private Sla01Service sla01Service;
@@ -46,11 +35,11 @@ public class Slb11Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(Long slb11002) {
+	public Object list(Long slb16002) {
 		
-		List<Slb11> slb11s = slb11Service.findBySlb11002(slb11002);
+		List<Slb16> slb16s = slb16Service.findBySlb16002(slb16002);
 		
-		return Rets.success(slb11s);
+		return Rets.success(slb16s);
 		
 	}
 	
@@ -60,24 +49,24 @@ public class Slb11Controller extends BaseController{
 	 * @param 銷售案代號
 	 * @return
 	 */
-	@RequestMapping(value = "/getSlb11004",method = RequestMethod.GET)
-	public Object getSlb11004(String slb10004) {
+	@RequestMapping(value = "/getSlb16004",method = RequestMethod.GET)
+	public Object getSlb16004(String slb10004) {
 		List<SalesVo> list = sla01Service.findNotSaleHouseByProjectNo(slb10004);
 		return Rets.success(list);
 	}
 	
 	@Transactional
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Object add(@ModelAttribute @Valid Slb11 slb11) {
-		if(slb11.getId() == null) {
+	public Object add(@ModelAttribute @Valid Slb16 slb16) {
+		if(slb16.getId() == null) {
 			
-			slb11Service.insert(slb11);
+			slb16Service.insert(slb16);
 		}else {
 			
-			slb11Service.update(slb11);
+			slb16Service.update(slb16);
 		}
 		
-		sla01Service.updateStatusBySla01ID(slb11.getSlb11010(), "B");//B=成交
+		sla01Service.updateStatusBySla01ID(slb16.getSlb16010(), "B");//B=成交
 		
 		
 		return Rets.success();
@@ -86,7 +75,7 @@ public class Slb11Controller extends BaseController{
 	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id, Long houseId, String projectNo) {
-		slb11Service.delete(id);
+		slb16Service.delete(id);
 		
 		//變更棟別狀態
 		sla01Service.updateStatusBySla01ID(houseId, "A");//A=未售

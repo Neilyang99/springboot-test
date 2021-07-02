@@ -24,6 +24,12 @@ public interface Slb10Repository  extends BaseRepository<Slb10,Long>{
 			"set slb10013=b.cnt, slb10014=b.amount where a.id=?1", nativeQuery = true)
 	int updateAmountById(Long id);
 	
+	@Modifying
+	@Query(value="update slb10 a inner join ( " +
+			"select slb11002,count(1) as cnt,sum(slb11006) as amount from slb11 group  by slb11002) b on a.id=slb11002 " + 
+			"set ?2=b.cnt, ?3=b.amount where a.id=?1", nativeQuery = true)
+	int updateCountAmountById(Long id, String cntField, String amtField);
+	
 		
 	//更新今日累計成交戶數與金額
 	@Modifying
@@ -32,5 +38,14 @@ public interface Slb10Repository  extends BaseRepository<Slb10,Long>{
 			+ "inner join slb11 b on a.id=b.slb11002 where a.slb10004=?2 group  by slb10004) b on a.slb10004=b.slb10004 "
 			+ "set slb10015=b.cnt, slb10016=b.amount where a.id=?1", nativeQuery = true)
 	int updateTotalAmountByIdAndProjectNo(Long id, String projectNo);
+	
+	
+	//更新回籠人數
+	@Modifying
+	@Query(value="update slb10 a inner join ( " +
+			"select slb12002,count(1) as cnt from slb12 group  by slb12002) b on a.id=slb12002 " + 
+			"set slb10011=b.cnt where a.id=?1", nativeQuery = true)
+	int updateAgainCountById(Long id);
+	
 	
 }

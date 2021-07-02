@@ -1,6 +1,5 @@
 package cn.enilu.flash.api.controller.sales;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,30 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
-import cn.enilu.flash.bean.constant.factory.PageFactory;
-import cn.enilu.flash.bean.entity.sales.Sla01;
-import cn.enilu.flash.bean.entity.sales.Slb10;
-import cn.enilu.flash.bean.entity.sales.Slb11;
-import cn.enilu.flash.bean.vo.DictVo;
+import cn.enilu.flash.bean.entity.sales.Slb15;
 import cn.enilu.flash.bean.vo.front.Rets;
-import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.service.sales.Sla01Service;
 import cn.enilu.flash.service.sales.Slb10Service;
-import cn.enilu.flash.service.sales.Slb11Service;
-import cn.enilu.flash.service.system.impl.ConstantFactory;
-import cn.enilu.flash.utils.BeanUtil;
-import cn.enilu.flash.utils.StringUtil;
-import cn.enilu.flash.utils.factory.Page;
-import cn.enilu.flash.warpper.UserWarpper;
+import cn.enilu.flash.service.sales.Slb15Service;
 
 
 @RestController
-@RequestMapping("/slb11")
-public class Slb11Controller extends BaseController{
+@RequestMapping("/slb15")
+public class Slb15Controller extends BaseController{
 
 	@Autowired
-    private Slb11Service slb11Service;
+    private Slb15Service slb15Service;
 	
 	@Autowired
     private Sla01Service sla01Service;
@@ -46,11 +35,11 @@ public class Slb11Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(Long slb11002) {
+	public Object list(Long slb15002) {
 		
-		List<Slb11> slb11s = slb11Service.findBySlb11002(slb11002);
+		List<Slb15> slb15s = slb15Service.findBySlb15002(slb15002);
 		
-		return Rets.success(slb11s);
+		return Rets.success(slb15s);
 		
 	}
 	
@@ -60,24 +49,26 @@ public class Slb11Controller extends BaseController{
 	 * @param 銷售案代號
 	 * @return
 	 */
-	@RequestMapping(value = "/getSlb11004",method = RequestMethod.GET)
-	public Object getSlb11004(String slb10004) {
+	@RequestMapping(value = "/getSlb15004",method = RequestMethod.GET)
+	public Object getSlb15004(String slb10004) {
+		
+		//TODO: what kind of status should be selected? not sale or has contract
 		List<SalesVo> list = sla01Service.findNotSaleHouseByProjectNo(slb10004);
 		return Rets.success(list);
 	}
 	
 	@Transactional
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Object add(@ModelAttribute @Valid Slb11 slb11) {
-		if(slb11.getId() == null) {
+	public Object add(@ModelAttribute @Valid Slb15 slb15) {
+		if(slb15.getId() == null) {
 			
-			slb11Service.insert(slb11);
+			slb15Service.insert(slb15);
 		}else {
 			
-			slb11Service.update(slb11);
+			slb15Service.update(slb15);
 		}
 		
-		sla01Service.updateStatusBySla01ID(slb11.getSlb11010(), "B");//B=成交
+		//sla01Service.updateStatusBySla01ID(slb15.getSlb15010(), "B");//B=成交 ??
 		
 		
 		return Rets.success();
@@ -86,10 +77,11 @@ public class Slb11Controller extends BaseController{
 	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id, Long houseId, String projectNo) {
-		slb11Service.delete(id);
+		slb15Service.delete(id);
 		
 		//變更棟別狀態
-		sla01Service.updateStatusBySla01ID(houseId, "A");//A=未售
+		//TODO : what is the status after remove the order
+		//sla01Service.updateStatusBySla01ID(houseId, "A");//A=未售 ????
 
         return Rets.success();
     }
@@ -97,10 +89,10 @@ public class Slb11Controller extends BaseController{
 	@Transactional
 	@RequestMapping(value = "/updateAmt", method = RequestMethod.POST)
     public Object updateAmt(Long id, String projectNo) {
-		int cnt1 = slb10Service.updateAmountById(id);
-		int cnt = slb10Service.updateTotalAmountByIdAndProjectNo(id, projectNo);
+		//int cnt1 = slb10Service.updateCountAmountById(id, "slb10027", "slb10028");
+		//int cnt = slb10Service.updateTotalAmountByIdAndProjectNo(id, projectNo);
 
-        return Rets.success("OK="+cnt+" =>"+cnt1+" id="+id+" pjNo="+projectNo);
+        return Rets.success("OK= id="+id+" pjNo="+projectNo);
     }
 	
 }
