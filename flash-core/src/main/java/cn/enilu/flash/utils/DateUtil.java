@@ -1,6 +1,4 @@
 /**
- * Copyright (c) 2015-2016, Chill Zhuang 庄骞 (smallchill@163.com).
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -319,11 +317,61 @@ public class DateUtil {
 
 		return dateStr;
 	}
+	
+	/**
+	 * YWG
+	 * 基準日加減幾天
+	 * @param date 基準日
+	 * @param days 加/減天數
+	 * @return Date
+	 */
+	public static Date getDateAfterDays(Date date, String days) {
+		int daysInt = Integer.parseInt(days);
+		
+		Calendar canlendar = Calendar.getInstance(); 
+		canlendar.setTime(date);
+		canlendar.add(Calendar.DATE, daysInt); // 日期减 如果不够减会将月变动
+		
+
+		return canlendar.getTime();
+	}
+	
+	/**
+	 * YWG
+	 * get the first date(Monday) in this week
+	 * @param date
+	 * @return
+	 */
+	public static Date getThisWeekMonday(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		// 獲得當前日期是一個星期的第幾天
+		int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+		if (1 == dayWeek) {
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+		}
+		// 設定一個星期的第一天，按中國的習慣一個星期的第一天是星期一
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		// 獲得當前日期是一個星期的第幾天
+		int day = cal.get(Calendar.DAY_OF_WEEK);
+		// 根據日曆的規則，給當前日期減去星期幾與一個星期第一天的差值
+		cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
+		return cal.getTime();
+	}
 
 
 	public static void main(String[] args) {
-		System.out.println(getTime(new Date()));
-		System.out.println(getAfterDayWeek("3"));
+		//System.out.println(getTime(new Date()));
+		//System.out.println(getAfterDayWeek("3"));
+		try {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date date = sdf.parse("20210706");
+		System.out.println("本週一:" + sdf.format(getThisWeekMonday(date)));
+		System.out.println("本週日:" + sdf.format(getDateAfterDays(date,"6")));
+		
+		}catch(Exception e) {
+			
+		}
 	}
 
 }

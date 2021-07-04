@@ -1,6 +1,7 @@
 package cn.enilu.flash.api.controller.sales;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,7 +21,6 @@ import cn.enilu.flash.bean.vo.sales.Sla10Vo;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
-import cn.enilu.flash.warpper.UserWarpper;
 import cn.enilu.flash.service.sales.VisitorService;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 
@@ -56,6 +56,12 @@ public class VisitorController  extends BaseController {
 			
 			List<Sla10Vo> list = new ArrayList<Sla10Vo>();
 			
+			HashMap<String, String> mp = new HashMap<String, String>();
+			List<DictVo> dictList = ConstantFactory.me().findByDictName("來人來電");
+			for(DictVo dict : dictList) {
+				mp.put(dict.getKey(), dict.getValue());
+			}
+			
 			List<Object[]> obj = visitorService.queryGridList();
 			for(Object[] ary : obj) {
 				Sla10Vo sla10Vo = new Sla10Vo(); 
@@ -63,6 +69,10 @@ public class VisitorController  extends BaseController {
 				sla10Vo.setSla10002((String) ary[1]);
 				sla10Vo.setSla10002Name((String) ary[2]);
 				sla10Vo.setSla10004((String) ary[3]);
+				sla10Vo.setSla10004Name("");
+				if(mp.get(sla10Vo.getSla10004()) != null) {
+					sla10Vo.setSla10004Name(mp.get(sla10Vo.getSla10004()));
+				}
 				sla10Vo.setSla10005((String) ary[4]);
 				sla10Vo.setSla10006((String) ary[5]);
 				sla10Vo.setSla10010((String) ary[6]);
@@ -73,8 +83,10 @@ public class VisitorController  extends BaseController {
 				list.add(sla10Vo);
 			}
 			
+			//TODO: Why the front-end doesn't run
+			
 			page = visitorService.queryPage(page);
-			List listPage = (List) new UserWarpper(BeanUtil.objectsToMaps(page.getRecords())).warp();
+			List listPage = BeanUtil.objectsToMaps(page.getRecords());
 			
 			page.setRecords(listPage);
 			
@@ -102,6 +114,16 @@ public class VisitorController  extends BaseController {
         return Rets.success();
     }
 	
+	/**
+	 * 取得來人來電
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla10004",method = RequestMethod.GET)
+	public Object getSla10004() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("來人來電");
+		
+		return Rets.success(dictList);
+	}
 	/**
 	 * 取得區域
 	 * @return

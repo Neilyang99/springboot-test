@@ -11,4 +11,6 @@ public interface Sla11Repository extends BaseRepository<Sla11,Long>{
 	Sla11 findBySla11004(String str);
 	List<Sla11> findBySla11002(String visitorId);
 	
+	
+	
 }

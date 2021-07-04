@@ -20,7 +20,6 @@ import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.DateUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
-import cn.enilu.flash.warpper.UserWarpper;
 
 
 @RestController
@@ -44,7 +43,7 @@ public class Sla00Controller extends BaseController{
 			page.addFilter( "sla00003", SearchFilter.Operator.LIKE, name);
 		}
 		page = sla00Service.queryPage(page);
-		List list = (List) new UserWarpper(BeanUtil.objectsToMaps(page.getRecords())).warp();
+		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
         
 		return Rets.success(page);

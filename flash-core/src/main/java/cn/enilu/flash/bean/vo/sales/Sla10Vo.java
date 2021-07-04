@@ -10,6 +10,7 @@ public class Sla10Vo {
 	private String sla10002;
 	private String sla10002Name;
 	private String sla10004;
+	private String sla10004Name;
 	private String sla10005;
 	private String sla10006;
 	private String sla10010;
