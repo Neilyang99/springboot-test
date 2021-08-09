@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.sales.Sla11Vo;
 import cn.enilu.flash.service.sales.Sla11Service;
+import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 import cn.enilu.flash.utils.StringUtil;
 
@@ -26,6 +28,9 @@ public class Sla11Controller extends BaseController{
 
 	@Autowired
     private Sla11Service sla11Service;
+	
+	@Autowired
+	private Sla20Service sla20Service;
 	
 	@RequestMapping(value = "/visitorList",method = RequestMethod.GET)
 	public Object list(String visitorId) {
@@ -87,6 +92,7 @@ public class Sla11Controller extends BaseController{
 		return Rets.success(dictList);
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla11 sla11) {
 		if(sla11.getId() == null) {

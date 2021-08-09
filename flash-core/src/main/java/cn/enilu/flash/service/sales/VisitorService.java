@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 	
 	public List<Object[]> queryGridList(){
 		return visitorDao.queryGridList();
+	}
+	
+	public Visitor findByUID(Long id) {
+		Optional<Visitor> sla10 = visitorDao.findById(id);
+		
+		return sla10.get();
 	}
 	
 	/**
