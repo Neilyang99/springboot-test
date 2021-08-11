@@ -22,5 +22,4 @@ public class Sla11Service  extends BaseService<Sla11,Long,Sla11Repository>{
 		return sla11Repository.findBySla11004(dt);
 	}
 	
-	
 }

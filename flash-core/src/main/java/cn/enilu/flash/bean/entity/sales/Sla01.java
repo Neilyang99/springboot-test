@@ -22,7 +22,7 @@ public class Sla01 extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 5473170669263561044L;
 	
-	private int sla01002; //房屋銷售案資料唯一識別碼
+	private Long sla01002; //房屋銷售案資料唯一識別碼
 	private String sla01003; //房屋銷售案代號
 	private String sla01004; //區別
 	private String sla01005; //棟別
@@ -36,7 +36,7 @@ public class Sla01 extends BaseEntity {
 	private String sla01013; //地號
 	private String sla01014; //地址
 	private String sla01015; //車位類別
-	private int sla01016; //房屋銷售案可售車位資料唯一識別碼
+	private Long sla01016; //房屋銷售案可售車位資料唯一識別碼
 	private String sla01017; //車位編號
 	private int sla01018; //銷售表價
 	private int sla01019; //業務員底價

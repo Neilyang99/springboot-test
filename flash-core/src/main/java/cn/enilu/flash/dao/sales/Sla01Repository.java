@@ -1,6 +1,7 @@
 package cn.enilu.flash.dao.sales;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,7 @@ public interface Sla01Repository  extends BaseRepository<Sla01,Long>{
 	
 	List<Sla01> findBySla01002(Integer sla01002);
 	List<Sla01> findBySla01003(String sla01003);
+	Optional<Sla01> findById(Long id);
 	
 	@Query(value="SELECT a.* FROM sla01 a WHERE a.sla01027 in ('A','C') and a.sla01003 = ?1", nativeQuery=true)
 	List<Sla01> findNotSaleHouse(String projectNo);

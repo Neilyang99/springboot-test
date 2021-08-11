@@ -34,6 +34,10 @@ public class Sla01Service extends BaseService<Sla01,Long,Sla01Repository>{
 		sla01Repository.updateStatusBySla01ID(id, status);
 	}
 	
+	public Sla01 findById(Long id) {
+		return sla01Repository.findById(id).get();
+	}
+	
 	/**
 	 * 根據房屋銷售代號取的可售房屋清單
 	 * @param projectNo 房屋銷售代號

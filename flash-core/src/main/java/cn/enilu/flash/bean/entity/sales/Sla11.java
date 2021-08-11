@@ -36,4 +36,6 @@ public class Sla11 extends BaseEntity {
 	private String sla11008;
 	@Column
 	private String sla11009;
+	@Column
+	private Long sla11023;
 }
