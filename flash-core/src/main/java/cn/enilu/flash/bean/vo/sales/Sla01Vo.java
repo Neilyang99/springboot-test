@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class Sla01Vo {
-	private int id;
-	private int sla01002; //房屋銷售案資料唯一識別碼
+	private Long id;
+	private Long sla01002; //房屋銷售案資料唯一識別碼
 	private String sla01003; //房屋銷售案代號
 	private String sla01004; //區別
 	private String sla01005; //棟別

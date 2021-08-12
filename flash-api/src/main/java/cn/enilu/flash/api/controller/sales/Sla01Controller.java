@@ -15,6 +15,7 @@ import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.entity.sales.Sla01;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
+import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.bean.vo.sales.Sla01Vo;
 import cn.enilu.flash.service.sales.Sla01Service;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
@@ -36,7 +37,7 @@ public class Sla01Controller extends BaseController{
 		List<Sla01> list = sla01Service.findBySla01002(sla01002);
 		for(Sla01 sla01 : list) {
 			Sla01Vo sla01Vo = new Sla01Vo();
-			sla01Vo.setId(sla01.getId().intValue());
+			sla01Vo.setId(sla01.getId());
 			sla01Vo.setSla01002(sla01.getSla01002());
 			sla01Vo.setSla01003(sla01.getSla01003());
 			sla01Vo.setSla01004(sla01.getSla01004());
@@ -94,6 +95,19 @@ public class Sla01Controller extends BaseController{
 		List<DictVo> dictList = ConstantFactory.me().findByDictName("車位類別");
 		
 		return Rets.success(dictList);
+	}
+	
+	/**
+	 * 取得尚未銷售過的房屋
+	 * @param 銷售案代號
+	 * @return(id, 棟別<>戶號)
+	 */
+	@RequestMapping(value = "/getNotSaleHouse",method = RequestMethod.GET)
+	public Object getNotSaleHouse(String projectNo) {
+		
+		List<SalesVo> list = sla01Service.findNotSaleHouseByProjectNo(projectNo);
+		
+		return Rets.success(list);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

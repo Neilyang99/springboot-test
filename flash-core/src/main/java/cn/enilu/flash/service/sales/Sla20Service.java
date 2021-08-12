@@ -32,13 +32,14 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 		Sla01 sla01 = sla01Service.findById(sla11.getSla11023());
 		
 		Sla20 sla20 = new Sla20();
-		sla20.setSla20002(0L);
+		sla20.setSla20002(sla01.getSla01002());
 		sla20.setSla20003("");
 		sla20.setSla20004(DateUtil.getDays());
 		sla20.setSla20005("A0");//A0=編輯, 尚未確定的訂單
 		sla20.setSla20006(sla11.getSla11002());
 		sla20.setSla20007(sla10.getSla10005());
 		sla20.setSla20008(sla10.getSla10006());
+		sla20.setSla20009(0L);
 		sla20.setSla20013(sla10.getSla10007());
 		sla20.setSla20014(sla10.getSla10008());
 		sla20.setSla20015(sla10.getSla10009());
@@ -69,7 +70,7 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 		sla20.setSla20067(sla01.getSla01026());
 		
 		if(this.findOrderByProjectAndCustomer(sla01.getSla01002(), sla11.getSla11002()) == null) {
-			this.sla20Repository.save(sla20);
+			this.insert(sla20);
 		}
 		
 			

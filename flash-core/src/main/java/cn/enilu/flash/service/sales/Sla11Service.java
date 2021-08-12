@@ -15,7 +15,7 @@ public class Sla11Service  extends BaseService<Sla11,Long,Sla11Repository>{
 	@Autowired
 	private Sla11Repository sla11Repository;
 	
-	public List<Sla11> findByVisitId(String visitorId) {
+	public List<Sla11> findByVisitId(Long visitorId) {
 		return sla11Repository.findBySla11002(visitorId);
 	}
 	public Sla11 findByVisitDate(String dt) {

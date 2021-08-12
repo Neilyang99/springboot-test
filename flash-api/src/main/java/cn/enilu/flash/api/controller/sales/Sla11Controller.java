@@ -33,7 +33,7 @@ public class Sla11Controller extends BaseController{
 	private Sla20Service sla20Service;
 	
 	@RequestMapping(value = "/visitorList",method = RequestMethod.GET)
-	public Object list(String visitorId) {
+	public Object list(Long visitorId) {
 		if(StringUtil.isNullOrEmpty(visitorId)) {
 			List<Sla11Vo> sla11VoList = new ArrayList<Sla11Vo>();
 			List<Sla11> list = sla11Service.queryAll();
@@ -97,6 +97,11 @@ public class Sla11Controller extends BaseController{
 	public Object add(@ModelAttribute @Valid Sla11 sla11) {
 		if(sla11.getId() == null) {
 			sla11Service.insert(sla11);
+			//G=小訂 H=大訂
+			if(sla11.getSla11003().equals("G") || sla11.getSla11003().equals("H")) {
+				sla20Service.insertOrder(sla11);
+			}
+			
 		}else {
 			
 			sla11Service.update(sla11);
