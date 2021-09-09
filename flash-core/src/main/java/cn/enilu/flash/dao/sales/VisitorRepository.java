@@ -75,4 +75,21 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 			"on t.sla10002=w.sla10002 and t.sla11003=w.sla11003 " + 
 			"where t.sla10002=?1", nativeQuery = true)
 	List<Object[]> sumMediaBySla11(String projectCode, String dateFrom, String dateTo);
+	
+	
+	//for 客戶資料圖表 :動機總數量---------------
+	@Query(value = "SELECT sla10002,sla10020,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10020", nativeQuery = true)
+	List<Object[]> countMotivationBySla10002(String projectCode);
+	
+	//for 客戶資料圖表 :來客量總數量---------------
+	@Query(value = "SELECT sla10002,substr(sla10013,1,6),sla10013,count(1) FROM sla10 where sla10002=?1 group by sla10002,substr(sla10013,1,6)", nativeQuery = true)
+	List<Object[]> countVisitorBySla10002(String projectCode);
+	
+	//for 客戶資料圖表 :位置總數---------------
+	@Query(value = "SELECT sla10002,sla10016,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10016", nativeQuery = true)
+	List<Object[]> countAreaBySla10002(String projectCode);
+
+	//for 客戶資料圖表 :來源總數---------------
+	@Query(value = "SELECT sla10002,sla10004,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10004", nativeQuery = true)
+	List<Object[]> countVisitTypeBySla10002(String projectCode);
 }

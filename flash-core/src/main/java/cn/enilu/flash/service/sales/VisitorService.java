@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import cn.enilu.flash.bean.entity.sales.Visitor;
 import cn.enilu.flash.bean.vo.DictVo;
+import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.bean.vo.sales.VisitorReportVo;
 import cn.enilu.flash.bean.vo.sales.VisitorSummaryVo;
 import cn.enilu.flash.dao.sales.VisitorRepository;
@@ -292,5 +293,128 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 		
 		
 		return list;
+	}
+	
+	
+	/**
+	 * 取得動機總數量
+	 * @param projectCode
+	 * @return
+	 */
+	public List<SalesVo> countMotivationBySla10002(String projectCode) {
+		
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		HashMap<String, String> mp = new HashMap<String, String>();
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("購買用途選項");
+		for(DictVo vo : dictList) {
+    		mp.put(vo.getKey(), vo.getValue());
+    	}
+		
+		//Get Data
+		List<Object[]> objs = visitorDao.countMotivationBySla10002(projectCode);
+		
+		for(Object[] ary : objs) {
+			SalesVo vo = new SalesVo();
+			String name = mp.get(""+ary[1]);
+			vo.setKey((""+ary[1])==null || (""+ary[1]).isEmpty()?"":(""+ary[1]));//項目
+			vo.setValue(""+ary[2]);//筆數
+			vo.setName(name==null || name.isEmpty()?"N/A":name);//項目名稱
+			
+			list.add(vo);
+		}
+		
+		return list;
+		
+	}
+	
+	/**
+	 * 取得來客人數
+	 * @param projectCode
+	 * @return
+	 */
+	public List<SalesVo> countVisitorBySla10002(String projectCode) {
+		
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		
+		//Get Data
+		List<Object[]> objs = visitorDao.countVisitorBySla10002(projectCode);
+		
+		for(Object[] ary : objs) {
+			SalesVo vo = new SalesVo();
+			String value = ""+ary[1];
+			
+			vo.setKey(value==null || value.length()==0?"N/A":value);//年月
+			vo.setValue(""+ary[3]);//筆數
+			
+			list.add(vo);
+		}
+		
+		return list;
+		
+	}
+	
+	/**
+	 * 取得區域人數
+	 * @param projectCode
+	 * @return
+	 */
+	public List<SalesVo> countAreaBySla10002(String projectCode) {
+		
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		HashMap<String, String> mp = new HashMap<String, String>();
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("區域選項");
+		for(DictVo vo : dictList) {
+    		mp.put(vo.getKey(), vo.getValue());
+    	}
+		
+		//Get Data
+		List<Object[]> objs = visitorDao.countAreaBySla10002(projectCode);
+		
+		for(Object[] ary : objs) {
+			SalesVo vo = new SalesVo();
+			String value = ""+ary[1];
+			String name = mp.get(value);
+			
+			vo.setKey(value==null || value.length()==0?"N/A":value);//區域
+			vo.setValue(""+ary[2]);//筆數
+			vo.setName(name==null || name.isEmpty()?"N/A":name);//項目名稱
+			
+			list.add(vo);
+		}
+		
+		return list;
+		
+	}
+	/**
+	 * 取得來源人數
+	 * @param projectCode
+	 * @return
+	 */
+	public List<SalesVo> countVisitTypeBySla10002(String projectCode) {
+		
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		HashMap<String, String> mp = new HashMap<String, String>();
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("來人來電");
+		for(DictVo vo : dictList) {
+    		mp.put(vo.getKey(), vo.getValue());
+    	}
+		
+		//Get Data
+		List<Object[]> objs = visitorDao.countVisitTypeBySla10002(projectCode);
+		
+		for(Object[] ary : objs) {
+			SalesVo vo = new SalesVo();
+			String value = ""+ary[1];
+			String name = mp.get(value);
+			
+			vo.setKey(value==null || value.length()==0?"N/A":value);//來人/來電
+			vo.setValue(""+ary[2]);//筆數
+			vo.setName(name==null || name.isEmpty()?"N/A":name);//項目名稱
+			
+			list.add(vo);
+		}
+		
+		return list;
+		
 	}
 }
