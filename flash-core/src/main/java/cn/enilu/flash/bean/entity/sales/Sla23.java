@@ -48,32 +48,31 @@ public class Sla23 extends BaseEntity {
 	private String sla23023; //銀行入帳確認人姓名
 	private String sla23024; //銀行入款單號
 	private String sla23025; //銀行入款帳號
-	private String sla23026; //銀行入款單號
-	private String sla23027; //銀行入款帳號
-	private String sla23028; //銀行入款帳戶名稱
-	private String sla23029; //銀行入款日期
-	private int sla23030; //銀行入款金額
-	private String sla23031; //銀行入款確認人工號
-	private String sla23032; //銀行入款確認人姓名
-	private String sla23033; //收款類別
-	private int sla23034; //期款次數
-	private String sla23035; //期款名稱
-	private String sla23036; //立帳日期
-	private String sla23037; //立帳人工號
-	private String sla23038; //立帳人姓名
-	private String sla23039; //退款識別
-	private String sla23040; //退款人工號
-	private String sla23041; //退款人姓名
-	private String sla23042; //退款銀行代號
-	private String sla23043; //退款銀行名稱
-	private String sla23044; //退款單號
-	private String sla23045; //退款帳號
-	private String sla23046; //退款帳戶名稱
-	private String sla23047; //保留欄位1
-	private String sla23048; //保留欄位2
-	private String sla23049; //保留欄位3
-	private String sla23050; //保留欄位4
-	private String sla23051; //保留欄位5
+	private String sla23026; //銀行入款帳戶名稱
+	private String sla23027; //銀行入款日期
+	private int sla23028; //銀行入款金額
+	private String sla23029; //銀行入款確認人工號
+	private String sla23030; //銀行入款確認人姓名
+	private String sla23031; //收款類別
+	private int sla23032; //期款次數
+	private String sla23033; //期款名稱
+	private String sla23034; //立帳日期
+	private String sla23035; //立帳人工號
+	private String sla23036; //立帳人姓名
+	private String sla23037; //退款識別
+	private String sla23038; //退款人工號
+	private String sla23039; //退款人姓名
+	private String sla23040; //退款銀行代號
+	private String sla23041; //退款銀行名稱
+	private String sla23042; //退款單號
+	private String sla23043; //退款帳號
+	private String sla23044; //退款帳戶名稱
+	private String sla23045; //收款銀行代號
+	private String sla23046; //收款銀行帳號
+	private String sla23047; //支票號碼
+	private String sla23048; //票據到期日
+	private String sla23049; //備註
 	private String sla23052; //資料狀態
+
 
 }

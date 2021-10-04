@@ -330,21 +330,29 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 	/**
 	 * 取得來客人數
 	 * @param projectCode
+	 * @param type=year/quarter/month
 	 * @return
 	 */
-	public List<SalesVo> countVisitorBySla10002(String projectCode) {
+	public List<SalesVo> countVisitorBySla10002(String projectCode,String type) {
 		
 		List<SalesVo> list = new ArrayList<SalesVo>();
 		
 		//Get Data
-		List<Object[]> objs = visitorDao.countVisitorBySla10002(projectCode);
+		List<Object[]> objs = null;
+		if(type.equals("year")) {
+			objs = visitorDao.countVisitorBySla10002AndYear(projectCode);
+		}else if(type.equals("quarter")) {
+			objs = visitorDao.countVisitorBySla10002AndQuarter(projectCode);
+		}else {
+			objs = visitorDao.countVisitorBySla10002(projectCode);
+		}
 		
 		for(Object[] ary : objs) {
 			SalesVo vo = new SalesVo();
-			String value = ""+ary[1];
+			String value = ""+ary[2];
 			
-			vo.setKey(value==null || value.length()==0?"N/A":value);//年月
-			vo.setValue(""+ary[3]);//筆數
+			vo.setKey(value==null || value.length()==0?"N/A":value);// 年/月/季
+			vo.setValue(""+ary[1]);//筆數
 			
 			list.add(vo);
 		}

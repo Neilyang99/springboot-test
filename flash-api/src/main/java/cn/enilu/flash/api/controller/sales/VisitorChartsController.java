@@ -51,9 +51,9 @@ public class VisitorChartsController  extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCountBySla10013",method = RequestMethod.GET)
-	public Object getCountBySla10013(String projectCode) {
+	public Object getCountBySla10013(String projectCode, String type) {
 		
-		List<SalesVo> list = visitorService.countVisitorBySla10002(projectCode);
+		List<SalesVo> list = visitorService.countVisitorBySla10002(projectCode, type);
 		
 		return Rets.success(list);
 	}
