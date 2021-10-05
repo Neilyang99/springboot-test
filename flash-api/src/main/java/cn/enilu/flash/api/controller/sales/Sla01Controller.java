@@ -30,7 +30,7 @@ public class Sla01Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(Integer sla01002) {
+	public Object list(Long sla01002) {
 		
 		List<Sla01Vo> volist = new ArrayList<Sla01Vo>();
 		

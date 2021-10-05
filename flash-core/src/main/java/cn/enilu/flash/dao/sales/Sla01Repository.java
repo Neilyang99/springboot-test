@@ -11,7 +11,7 @@ import cn.enilu.flash.dao.BaseRepository;
 
 public interface Sla01Repository  extends BaseRepository<Sla01,Long>{
 	
-	List<Sla01> findBySla01002(Integer sla01002);
+	List<Sla01> findBySla01002(Long sla01002);
 	List<Sla01> findBySla01003(String sla01003);
 	Optional<Sla01> findById(Long id);
 	

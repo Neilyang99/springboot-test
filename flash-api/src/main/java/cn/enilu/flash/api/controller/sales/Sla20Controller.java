@@ -15,6 +15,7 @@ import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.sales.Sla20;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.bean.vo.query.SearchFilter.Operator;
 import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
@@ -42,6 +43,15 @@ public class Sla20Controller extends BaseController{
         page.setRecords(list);
         
 		return Rets.success(page);
+	}
+	
+	
+	@RequestMapping(value = "/getOrderById",method = RequestMethod.GET)
+	public Object getOrderById(Long id) {
+		
+		List<Sla20> list = sla20Service.queryAll(new SearchFilter("id",Operator.EQ, id));
+		
+		return Rets.success(list.get(0));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
