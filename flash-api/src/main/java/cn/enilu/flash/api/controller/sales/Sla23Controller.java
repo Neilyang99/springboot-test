@@ -1,6 +1,5 @@
 package cn.enilu.flash.api.controller.sales;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
