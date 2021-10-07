@@ -21,5 +21,12 @@ public class Sla11Service  extends BaseService<Sla11,Long,Sla11Repository>{
 	public Sla11 findByVisitDate(String dt) {
 		return sla11Repository.findBySla11004(dt);
 	}
+	public List<Sla11> getOrderIdBySla11002(Long visitorId) {
+		return sla11Repository.getOrderIdBySla11002(visitorId);
+	}
+	
+	public int updateOrderIdByLogId(Long visitorLogId, Long orderId) {
+		return sla11Repository.updateOrderIdByLogId(visitorLogId, orderId);
+	}
 	
 }

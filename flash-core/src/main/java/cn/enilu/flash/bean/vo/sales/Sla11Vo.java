@@ -15,6 +15,8 @@ public class Sla11Vo {
 	private String sla11007;
 	private String sla11008;
 	private String sla11009;
-	
+	private String sla11022;
+	private Long sla11023;
+	private Long sla11024;
 
 }

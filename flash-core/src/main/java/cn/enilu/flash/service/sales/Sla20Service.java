@@ -26,7 +26,7 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 	@Autowired
 	private Sla01Service sla01Service;
 	
-	public boolean insertOrder(Sla11 sla11) {
+	public Sla20 insertOrder(Sla11 sla11) {
 		
 		Visitor sla10 = this.sla10Service.findByUID(sla11.getSla11002());
 		Sla01 sla01 = sla01Service.findById(sla11.getSla11023());
@@ -70,12 +70,13 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 		sla20.setSla20067(sla01.getSla01026());
 		
 		if(this.findOrderByProjectAndCustomer(sla01.getSla01002(), sla11.getSla11002()) == null) {
-			this.insert(sla20);
+			sla20 = this.insert(sla20);
+			
 		}
 		
 			
 				
-		return true;
+		return sla20;
 	}
 	
 	public Sla20 findOrderByProjectAndCustomer(Long projectUID, Long customerUID) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.entity.sales.Sla11;
+import cn.enilu.flash.bean.entity.sales.Sla20;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.sales.Sla11Vo;
@@ -49,6 +50,9 @@ public class Sla11Controller extends BaseController{
 				sla11Vo.setSla11008(sla11.getSla11008());
 				sla11Vo.setSla11009(sla11.getSla11009());
 				sla11Vo.setSla11003Name(ConstantFactory.me().getDictsByName("洽詢類別",sla11.getSla11003()));
+				sla11Vo.setSla11022(sla11.getSla11022());
+				sla11Vo.setSla11023(sla11.getSla11023());
+				sla11Vo.setSla11024(sla11.getSla11024());
 				
 				sla11VoList.add(sla11Vo);
 			}
@@ -72,7 +76,9 @@ public class Sla11Controller extends BaseController{
 				sla11Vo.setSla11008(sla11.getSla11008());
 				sla11Vo.setSla11009(sla11.getSla11009());
 				sla11Vo.setSla11003Name(ConstantFactory.me().getDictsByName("洽詢類別",sla11.getSla11003()));
-				
+				sla11Vo.setSla11022(sla11.getSla11022());
+				sla11Vo.setSla11023(sla11.getSla11023());
+				sla11Vo.setSla11024(sla11.getSla11024());
 				
 				sla11VoList.add(sla11Vo);
 			}
@@ -96,14 +102,8 @@ public class Sla11Controller extends BaseController{
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla11 sla11) {
 		if(sla11.getId() == null) {
-			sla11Service.insert(sla11);
-			//G=小訂 H=大訂
-			if(sla11.getSla11003().equals("G") || sla11.getSla11003().equals("H")) {
-				sla20Service.insertOrder(sla11);
-			}
-			
+			sla11Service.insert(sla11);			
 		}else {
-			
 			sla11Service.update(sla11);
 		}
 		
@@ -116,5 +116,28 @@ public class Sla11Controller extends BaseController{
         return Rets.success();
     }
 	
+	@Transactional
+	@RequestMapping(value = "/creatOrder", method = RequestMethod.POST)
+	public Object creatOrder(@ModelAttribute @Valid Sla11 sla11) {
+		//Sla11003 : G=小訂 H=大訂
+		Sla20 sla20 = sla20Service.insertOrder(sla11);
+		int cnt = 0;
+		if(sla20.getId() > 0) {
+			cnt = sla11Service.updateOrderIdByLogId(sla11.getId(),sla20.getId());
+		}
+		if(cnt > 0) {
+			return Rets.success();
+		}else {
+			return Rets.failure("產生訂單失敗。");
+		}
+	}
+	
+	@RequestMapping(value = "/findOrderExist",method = RequestMethod.GET)
+	public Object findOrderExist(Long visitorId) {
+		
+		List<Sla11> list = sla11Service.getOrderIdBySla11002(visitorId);
+		
+		return Rets.success(list);
+	}
 	
 }

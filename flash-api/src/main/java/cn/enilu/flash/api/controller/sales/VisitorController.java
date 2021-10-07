@@ -17,6 +17,8 @@ import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.sales.Visitor;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
+import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.bean.vo.query.SearchFilter.Operator;
 import cn.enilu.flash.bean.vo.sales.Sla10Vo;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
@@ -113,6 +115,14 @@ public class VisitorController  extends BaseController {
 		visitorService.delete(id);
         return Rets.success();
     }
+	
+	@RequestMapping(value = "/getCustomerById",method = RequestMethod.GET)
+	public Object getCustomerById(Long id) {
+		
+		List<Visitor> list = visitorService.queryAll(new SearchFilter("id",Operator.EQ, id));
+		
+		return Rets.success(list.get(0));
+	}
 	
 	/**
 	 * 取得來人來電

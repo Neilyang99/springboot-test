@@ -20,6 +20,7 @@ public class Sla11 extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -2559909677124382892L;
+	
 	@Column
 	private Long sla11002;
 	@Column
@@ -37,5 +38,9 @@ public class Sla11 extends BaseEntity {
 	@Column
 	private String sla11009;
 	@Column
+	private String sla11022;
+	@Column
 	private Long sla11023;
+	@Column
+	private Long sla11024;
 }
