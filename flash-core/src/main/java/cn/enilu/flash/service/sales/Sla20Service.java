@@ -86,4 +86,8 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 		return sla20;
 	}
 	
+	public void updateOrderStatus(Long orderId, String status) {
+		this.sla20Repository.updateOrderStatus(orderId, status);
+	}
+	
 }

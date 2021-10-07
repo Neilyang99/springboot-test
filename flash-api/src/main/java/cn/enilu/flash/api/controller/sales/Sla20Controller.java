@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,8 @@ import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
+import cn.enilu.flash.warpper.Sla20Wrapper;
+import cn.enilu.flash.warpper.Sla23Wrapper;
 
 
 @RestController
@@ -39,7 +42,7 @@ public class Sla20Controller extends BaseController{
 			page.addFilter( "sla20008", SearchFilter.Operator.LIKE, name);
 		}
 		page = sla20Service.queryPage(page);
-		List list = BeanUtil.objectsToMaps(page.getRecords());
+		List list = (List) new Sla20Wrapper(BeanUtil.objectsToMaps(page.getRecords())).warp();
         page.setRecords(list);
         
 		return Rets.success(page);
@@ -52,6 +55,15 @@ public class Sla20Controller extends BaseController{
 		List<Sla20> list = sla20Service.queryAll(new SearchFilter("id",Operator.EQ, id));
 		
 		return Rets.success(list.get(0));
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/updateStatus",method = RequestMethod.POST)
+	public Object updateStatus(Long id, String status) {
+		
+		sla20Service.updateOrderStatus(id, status);
+		
+		return Rets.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

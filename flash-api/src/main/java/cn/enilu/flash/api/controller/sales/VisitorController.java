@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
@@ -19,10 +20,9 @@ import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.bean.vo.query.SearchFilter.Operator;
-import cn.enilu.flash.bean.vo.sales.Sla10Vo;
 import cn.enilu.flash.utils.BeanUtil;
-import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
+import cn.enilu.flash.warpper.Sla10Wrapper;
 import cn.enilu.flash.service.sales.VisitorService;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 
@@ -32,70 +32,25 @@ import cn.enilu.flash.service.system.impl.ConstantFactory;
 public class VisitorController  extends BaseController {
 	@Autowired
     private VisitorService visitorService;
-	//private Sla00Service sla00Service;
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-    //@RequiresPermissions(value = {Permission.VISITOR})
-	public Object list(String name) {
-		if(StringUtil.isNullOrEmpty(name)) {
-//			List<Visitor> list = new ArrayList<Visitor>();
-//			Sla00Service sla00Service = new Sla00Service();
-//			List<Sla00> sla00List = sla00Service.queryAll();
-//			List<Visitor> visitorList = visitorService.queryAll();
-//			
-//			for(Visitor visitor : visitorList) {
-//				if(!visitor.getSla10002().equals(null)) {
-//					for(Sla00 sla00 : sla00List) {
-//						if(visitor.getSla10002().equals(sla00.getSla00002())){
-//							visitor.setSla10003(sla00.getSla00003());
-//						}
-//					}
-//				}
-//				list.add(visitor);
-//			}
-			
-			Page<Visitor> page = new PageFactory<Visitor>().defaultPage();
-			
-			List<Sla10Vo> list = new ArrayList<Sla10Vo>();
-			
-			HashMap<String, String> mp = new HashMap<String, String>();
-			List<DictVo> dictList = ConstantFactory.me().findByDictName("來人來電");
-			for(DictVo dict : dictList) {
-				mp.put(dict.getKey(), dict.getValue());
-			}
-			
-			List<Object[]> obj = visitorService.queryGridList();
-			for(Object[] ary : obj) {
-				Sla10Vo sla10Vo = new Sla10Vo(); 
-				sla10Vo.setSla10001((Integer) ary[0]);
-				sla10Vo.setSla10002((String) ary[1]);
-				sla10Vo.setSla10002Name((String) ary[2]);
-				sla10Vo.setSla10004((String) ary[3]);
-				sla10Vo.setSla10004Name("");
-				if(mp.get(sla10Vo.getSla10004()) != null) {
-					sla10Vo.setSla10004Name(mp.get(sla10Vo.getSla10004()));
-				}
-				sla10Vo.setSla10005((String) ary[4]);
-				sla10Vo.setSla10006((String) ary[5]);
-				sla10Vo.setSla10010((String) ary[6]);
-				sla10Vo.setSla10013((String) ary[7]);
-				sla10Vo.setSla10014((String) ary[8]);
-				sla10Vo.setSla10015((String) ary[9]);
+	public Object list( @RequestParam(required = false) String sla10003,
+						@RequestParam(required = false) String sla10006,
+						@RequestParam(required = false) String sla10010,
+						@RequestParam(required = false) String sla10009) {
+	
+		Page<Visitor> page = new PageFactory<Visitor>().defaultPage();
+		page.addFilter( "sla10003", SearchFilter.Operator.LIKE, sla10003);
+		page.addFilter( "sla10006", SearchFilter.Operator.LIKE, sla10006);
+		page.addFilter( "sla10010", SearchFilter.Operator.LIKE, sla10010);
+		page.addFilter( "sla10009", SearchFilter.Operator.LIKE, sla10009);
 				
-				list.add(sla10Vo);
-			}
-			
-			//TODO: Why the front-end doesn't run
-			
-			page = visitorService.queryPage(page);
-			List listPage = BeanUtil.objectsToMaps(page.getRecords());
-			
-			page.setRecords(listPage);
-			
-			return Rets.success(page);
-		}else {
-			return Rets.success(visitorService.findBySla10006(name));
-		}
+		page = visitorService.queryPage(page);
+		List list = (List) new Sla10Wrapper(BeanUtil.objectsToMaps(page.getRecords())).warp();
+		
+		page.setRecords(list);
+		
+		return Rets.success(page);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

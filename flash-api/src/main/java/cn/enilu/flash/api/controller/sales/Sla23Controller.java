@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import cn.enilu.flash.bean.entity.sales.Sla23;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.service.sales.Sla23Service;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 import cn.enilu.flash.utils.BeanUtil;
@@ -30,6 +32,8 @@ public class Sla23Controller extends BaseController{
 	@Autowired
     private Sla23Service sla23Service;
 	
+	@Autowired
+    private Sla20Service sla20Service;
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
 	public Object list(Integer sla23002) {
@@ -65,7 +69,7 @@ public class Sla23Controller extends BaseController{
 	}
 	
 	
-	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla23 sla23) {
 		if(sla23.getId() == null) {
@@ -73,6 +77,23 @@ public class Sla23Controller extends BaseController{
 		}else {
 			
 			sla23Service.update(sla23);
+		}
+		
+		String orderStatus = "";
+		if(sla23.getSla23031().equals("10") || sla23.getSla23031().equals("20")) {
+			orderStatus = "B0";
+		}else if(sla23.getSla23031().equals("30")) {
+			orderStatus = "B1";
+		}else if(sla23.getSla23031().equals("40")) {
+			orderStatus = "B2";
+		}else if(sla23.getSla23031().equals("50")) {
+			orderStatus = "B3";
+		}else if(sla23.getSla23031().equals("60")) {	
+			orderStatus = "B5";
+		}
+		
+		if(!orderStatus.equals("")) {
+			sla20Service.updateOrderStatus(sla23.getSla23002(), orderStatus);
 		}
 		
 		return Rets.success();

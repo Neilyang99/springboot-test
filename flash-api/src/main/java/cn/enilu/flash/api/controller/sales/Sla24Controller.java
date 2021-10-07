@@ -19,6 +19,7 @@ import cn.enilu.flash.bean.entity.sales.Sla24;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.service.sales.Sla24Service;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 import cn.enilu.flash.utils.BeanUtil;
@@ -32,6 +33,9 @@ public class Sla24Controller extends BaseController{
 
 	@Autowired
     private Sla24Service sla24Service;
+	
+	@Autowired
+    private Sla20Service sla20Service;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -69,11 +73,13 @@ public class Sla24Controller extends BaseController{
 	}
 	
 	
-	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla24 sla24) {
 		if(sla24.getId() == null) {
 			sla24Service.insert(sla24);
+			
+			sla20Service.updateOrderStatus(sla24.getSla24002(), "B4");
 		}else {
 			
 			sla24Service.update(sla24);

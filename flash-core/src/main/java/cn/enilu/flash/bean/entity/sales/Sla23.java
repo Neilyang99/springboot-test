@@ -24,7 +24,7 @@ public class Sla23 extends BaseEntity {
 	
 	
 	@Column
-	private int sla23002; //訂單主資料唯一識別碼
+	private Long sla23002; //訂單主資料唯一識別碼
 	private String sla23003; //訂單號
 	private int sla23004; //收款次數
 	private String sla23005; //收款日期

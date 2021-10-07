@@ -30,8 +30,8 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 		return visitorDao.findBySla10006(name);
 	}
 	
-	public List<Object[]> queryGridList(){
-		return visitorDao.queryGridList();
+	public List<Object[]> queryGridList(String projectName, String name, String cellPhone, String tel){
+		return visitorDao.queryGridList(projectName,name,cellPhone,tel);
 	}
 	
 	public Visitor findByUID(Long id) {

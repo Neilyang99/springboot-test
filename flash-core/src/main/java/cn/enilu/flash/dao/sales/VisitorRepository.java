@@ -17,8 +17,9 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 	
 	Optional<Visitor> findById(Long id);
 	
-	@Query(value = "select sla10.id,sla10002,sla00003 as sla10002name,sla10004,sla10005,sla10006,sla10010,sla10013,sla10014,sla10015 from sla10 left join sla00 on sla10002=sla00002 ", nativeQuery = true)
-	List<Object[]> queryGridList();
+	@Query(value = "select sla10.id,sla10002,sla00003 as sla10002name,sla10004,sla10005,sla10006,sla10010,sla10013,sla10014,sla10015 from sla10 "
+			+ "left join sla00 on sla10002=sla00002 WHERE sla10003 LIKE ?1 and sla10006 LIKE ?2 and sla10010 LIKE ?3 and sla10009 LIKE ?4", nativeQuery = true)
+	List<Object[]> queryGridList(String projectName, String name, String cellPhone, String tel);
 	
 	//get media statistics
 	//totalCount=累計, thisWeek=本周

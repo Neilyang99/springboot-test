@@ -49,7 +49,7 @@ public class Sla01Service extends BaseService<Sla01,Long,Sla01Repository>{
 		List<Sla01> sla01s = this.findNotSaleHouse(projectNo);
 		
 		for(Sla01 sla01 : sla01s) {
-			SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01005()+"<>"+sla01.getSla01006());//(id, 棟別<>戶號)
+			SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01005()+"棟，戶號="+sla01.getSla01006());//(id, 棟別,戶號)
 			list.add(vo);
 		}
 		return list;
