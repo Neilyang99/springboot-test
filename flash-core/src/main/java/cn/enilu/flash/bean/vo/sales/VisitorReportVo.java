@@ -21,7 +21,7 @@ public class VisitorReportVo {
 	private Double countAccPercentByTel;
 	private Integer countWeeklyByAgain;
 	private Double countPercentByAgain;
-	private Integer countAccWeeklyByAgain;
+	private Integer countAccByAgain;
 	private Double countAccPercentByAgain;
 	private Integer countWeeklyByOrder;
 	private Double countPercentByOrder;

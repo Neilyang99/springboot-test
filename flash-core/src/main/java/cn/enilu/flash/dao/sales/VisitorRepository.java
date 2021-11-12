@@ -101,4 +101,26 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 	//for 客戶資料圖表 :來源總數---------------
 	@Query(value = "SELECT sla10002,sla10004,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10004", nativeQuery = true)
 	List<Object[]> countVisitTypeBySla10002(String projectCode);
+	
+	//for 已購原因分析_本週
+	@Query(value = "SELECT sla10029,COUNT(1) weekly FROM sla20 " + 
+			"INNER JOIN sla10 b ON sla20006=b.id WHERE sla20002=?1 AND sla20005 LIKE 'B%' and sla20004 BETWEEN ?2 and ?3 Group by sla10029", nativeQuery = true)
+	List<Object[]> orderCauseBySla10002(Long projectId, String dateFrom, String dateTo);
+	
+	//for 已購原因分析_上周累計
+	@Query(value = "SELECT sla10029,COUNT(1) acc FROM sla20 " + 
+			"INNER JOIN sla10 b ON sla20006=b.id WHERE sla20002=?1 AND sla20005 LIKE 'B%' and sla20004 < ?2 Group by sla10029", nativeQuery = true)
+	List<Object[]> orderCauseAccBySla10002(Long projectId, String dateFrom);	
+
+	//for 回籠未成交---------------
+	@Query(value = "SELECT sla11004,sla10006,sla11005,sla10030,sla10015 FROM sla11 INNER JOIN sla10 a ON sla11002=a.id AND a.sla10002=?1 WHERE sla11003='F' AND a.sla10030<>'' order by sla11004", nativeQuery = true)
+	List<Object[]> notDealAgainBySla10002(String projectCode);
+	
+	//for 格局去化_房型規劃---------------
+	@Query(value = "SELECT concat(sla01007,'_',sla01008),COUNT(1) FROM sla01 WHERE sla01002=?1 GROUP BY sla01007,sla01008", nativeQuery = true)
+	List<Object[]> houseTypeBySla01002(Long projectId);
+	
+	//for 銷況表_總銷---------------
+	@Query(value = "SELECT sla00028,sla00029,(sla00011+sla00012+sla00013+sla00014) totalQty,(sla00018+sla00019+sla00020+sla00021) soldQty FROM sla00 WHERE id=?1", nativeQuery = true)
+	List<Object[]> projectStatusById(Long projectId);
 }

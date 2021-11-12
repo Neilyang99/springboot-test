@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.vo.front.Rets;
+import cn.enilu.flash.bean.vo.sales.NotDealAgainVo;
+import cn.enilu.flash.bean.vo.sales.OrderCauseVo;
+import cn.enilu.flash.bean.vo.sales.SaleStatusVo;
 import cn.enilu.flash.bean.vo.sales.VisitorReportVo;
+import cn.enilu.flash.bean.vo.sales.houseTypeVo;
 import cn.enilu.flash.service.sales.VisitorService;
 import cn.enilu.flash.utils.DateUtil;
 
@@ -61,6 +65,58 @@ public class VisitorReportController  extends BaseController {
 		
 		
 		return Rets.success(list);
+	}
+	
+	@RequestMapping(value = "/getCauseAnalysis",method = RequestMethod.GET)
+	public Object getCauseAnalysis(Long projectId, String type) {
+		List<OrderCauseVo> list = new ArrayList<OrderCauseVo>();
+		
+		//first Day = Monday
+		Date monday = DateUtil.getThisWeekMonday(new Date());//Monday in this week
+		Date sunday = DateUtil.getDateAfterDays(monday, "6");//Sunday in this week
+		String mondayStr = DateUtil.formatDate(monday, "yyyyMMdd");
+		String sundayStr = DateUtil.formatDate(sunday, "yyyyMMdd");
+				
+		if(type.equals("BUY")) {//已購原因分析
+			list = visitorService.orderCause(projectId, mondayStr, sundayStr);
+		}else if(type.equals("NOBUY")) {
+			//TODO
+		}
+		
+		
+		return Rets.success(list);
+	}
+	
+	@RequestMapping(value = "/getNotDealAgain",method = RequestMethod.GET)
+	public Object getNotDealAgain(String projectCode, String type) {
+		List<NotDealAgainVo> list = new ArrayList<NotDealAgainVo>();
+		
+		if(type.equals("NOTDEAL")) {//未成交
+			list = visitorService.notDealAgain(projectCode);
+		}else if(type.equals("DEAL")) {
+			//TODO
+		}
+		
+		
+		return Rets.success(list);
+	}
+
+	@RequestMapping(value = "/getHouseType",method = RequestMethod.GET)
+	public Object getHouseType(Long projectId) {
+		List<houseTypeVo> list = new ArrayList<houseTypeVo>();
+		
+		list = visitorService.houseType(projectId);
+		
+		return Rets.success(list);
+	}
+	
+
+	@RequestMapping(value = "/getSaleStatus",method = RequestMethod.GET)
+	public Object getSaleStatus(Long projectId) {
+		
+		SaleStatusVo vo = visitorService.SaleStatusReport(projectId);
+		
+		return Rets.success(vo);
 	}
 
 }
