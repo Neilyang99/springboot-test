@@ -15,6 +15,7 @@ import cn.enilu.flash.bean.vo.sales.NotDealAgainVo;
 import cn.enilu.flash.bean.vo.sales.OrderCauseVo;
 import cn.enilu.flash.bean.vo.sales.SaleStatusVo;
 import cn.enilu.flash.bean.vo.sales.VisitorReportVo;
+import cn.enilu.flash.bean.vo.sales.WeeklyReportVo;
 import cn.enilu.flash.bean.vo.sales.houseTypeVo;
 import cn.enilu.flash.service.sales.VisitorService;
 import cn.enilu.flash.utils.DateUtil;
@@ -118,5 +119,12 @@ public class VisitorReportController  extends BaseController {
 		
 		return Rets.success(vo);
 	}
+	
+	@RequestMapping(value = "/getWeeklyReport",method = RequestMethod.GET)
+	public Object getWeeklyReport(Long projectId,String projectCode) {
 
+		WeeklyReportVo vo = visitorService.WeeklyReport(projectId, projectCode);
+		
+		return Rets.success(vo);
+	}
 }

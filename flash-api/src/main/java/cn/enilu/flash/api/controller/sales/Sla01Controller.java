@@ -110,6 +110,19 @@ public class Sla01Controller extends BaseController{
 		return Rets.success(list);
 	}
 	
+	/**
+	 * 取得專案所有房屋
+	 * @param projectId
+	 * @return
+	 */
+	@RequestMapping(value = "/getAllSaleHouse",method = RequestMethod.GET)
+	public Object getAllSaleHouse(String projectNo) {
+		
+		List<SalesVo> list = sla01Service.findSaleHouseByProjectNo(projectNo);
+		
+		return Rets.success(list);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Sla01 sla01) {
 		if(sla01.getId() == null) {

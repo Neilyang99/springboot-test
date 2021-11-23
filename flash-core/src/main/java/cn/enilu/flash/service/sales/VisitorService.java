@@ -2,6 +2,7 @@ package cn.enilu.flash.service.sales;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -19,10 +20,12 @@ import cn.enilu.flash.bean.vo.sales.SaleStatusVo;
 import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.bean.vo.sales.VisitorReportVo;
 import cn.enilu.flash.bean.vo.sales.VisitorSummaryVo;
+import cn.enilu.flash.bean.vo.sales.WeeklyReportVo;
 import cn.enilu.flash.bean.vo.sales.houseTypeVo;
 import cn.enilu.flash.dao.sales.VisitorRepository;
 import cn.enilu.flash.service.BaseService;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
+import cn.enilu.flash.utils.DateUtil;
 
 @Service
 public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
@@ -658,5 +661,443 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 		vo.setAccChangeQty(0);
 		
 		return vo;
+	}
+	
+	public WeeklyReportVo WeeklyReport(Long projectId, String projectCode) {
+		List<WeeklyReportVo> list = new ArrayList<WeeklyReportVo>();
+		WeeklyReportVo vo = new WeeklyReportVo();
+		
+		//first Day = Monday
+		Date monday = DateUtil.getThisWeekMonday(new Date());//Monday in this week
+		Date tue = DateUtil.getDateAfterDays(monday, "1");
+		Date wed = DateUtil.getDateAfterDays(monday, "2");
+		Date thu = DateUtil.getDateAfterDays(monday, "3");
+		Date fri = DateUtil.getDateAfterDays(monday, "4");
+		Date sat = DateUtil.getDateAfterDays(monday, "5");
+		Date sunday = DateUtil.getDateAfterDays(monday, "6");//Sunday in this week
+		
+		String mondayStr = DateUtil.formatDate(monday, "yyyyMMdd");
+		String tueStr = DateUtil.formatDate(tue, "yyyyMMdd");
+		String wedStr = DateUtil.formatDate(wed, "yyyyMMdd");
+		String thuStr = DateUtil.formatDate(thu, "yyyyMMdd");
+		String friStr = DateUtil.formatDate(fri, "yyyyMMdd");
+		String satStr = DateUtil.formatDate(sat, "yyyyMMdd");
+		String sundayStr = DateUtil.formatDate(sunday, "yyyyMMdd");
+		
+		String mondayMD = DateUtil.formatDate(monday, "MM/dd");
+		String tueMD = DateUtil.formatDate(tue, "MM/dd");
+		String wedMD = DateUtil.formatDate(wed, "MM/dd");
+		String thuMD = DateUtil.formatDate(thu, "MM/dd");
+		String friMD = DateUtil.formatDate(fri, "MM/dd");
+		String satMD = DateUtil.formatDate(sat, "MM/dd");
+		String sundayMD = DateUtil.formatDate(sunday, "MM/dd");
+		
+		
+		//Get Data
+		Object[] obj = visitorDao.projectStatusById(projectId).get(0);//0=底價總銷 1=表價總銷 2=總戶數 3=售出戶數 4=可售汽車
+		Object[] obj_actual = visitorDao.actualSalesByProjectId(projectId).get(0);//0=實際銷售戶數, 1=金額
+		//List<Object[]> obj_customer = visitorDao.customerByProject(projectCode, mondayStr);//[0=A來人,1=上周累計],[0=B來電,1=上周累計]
+		//Object[] obj_customerAgain = visitorDao.customerAgainByProject(projectCode, mondayStr).get(0);//上周累計回籠數
+		
+		
+		vo.setPeriod(mondayMD+" ~ "+sundayMD);
+		vo.setTotalHouse(Integer.parseInt(""+obj[2]));
+		vo.setTotalAmt(Integer.parseInt(""+obj[1]));
+		vo.setTotalCar(Integer.parseInt(""+obj[4]));
+		vo.setTotalCarAmt(0);//TODO
+		vo.setActualHouse(Integer.parseInt(""+obj_actual[0]));
+		vo.setActualAmt(Integer.parseInt(""+obj_actual[1]));
+		
+		//--1-------------
+		vo.setDate1(mondayMD);	
+		int[] data = this.transferData(projectId, projectCode, mondayStr, 1);
+		vo.setPersonCnt1(data[0]);
+		vo.setTelCnt1(data[1]);
+		vo.setAgainCnt1(data[2]);
+		
+		vo.setDealHouse1(data[3]);
+		vo.setDealAmt1(data[4]);
+		vo.setDealCar1(data[5]);
+		vo.setDealCarAmt1(data[6]);
+		
+		vo.setDepositHouse1(data[7]);
+		vo.setDepositAmt1(data[8]);
+		vo.setDepositCar1(data[9]);
+		vo.setDepositCarAmt1(data[10]);	
+
+		vo.setFillHouse1(data[11]);
+		vo.setFillAmt1(data[12]);
+		vo.setFillCar1(data[13]);
+		vo.setFillCarAmt1(data[14]);
+		
+		vo.setOrderHouse1(data[15]);
+		vo.setOrderAmt1(data[16]);
+		vo.setOrderCar1(data[17]);
+		vo.setOrderCarAmt1(data[18]);
+
+		vo.setCancelHouse1(data[19]);
+		vo.setCancelAmt1(data[20]);
+		vo.setCancelCar1(data[21]);
+		vo.setCancelCarAmt1(data[22]);
+		//--2-------------
+		vo.setDate2(tueMD);	
+		data = this.transferData(projectId, projectCode, tueStr, 1);
+		vo.setPersonCnt2(data[0]);
+		vo.setTelCnt2(data[1]);
+		vo.setAgainCnt2(data[2]);
+		
+		vo.setDealHouse2(data[3]);
+		vo.setDealAmt2(data[4]);
+		vo.setDealCar2(data[5]);
+		vo.setDealCarAmt2(data[6]);
+		
+		vo.setDepositHouse2(data[7]);
+		vo.setDepositAmt2(data[8]);
+		vo.setDepositCar2(data[9]);
+		vo.setDepositCarAmt2(data[10]);	
+
+		vo.setFillHouse2(data[11]);
+		vo.setFillAmt2(data[12]);
+		vo.setFillCar2(data[13]);
+		vo.setFillCarAmt2(data[14]);
+		
+		vo.setOrderHouse2(data[15]);
+		vo.setOrderAmt2(data[16]);
+		vo.setOrderCar2(data[17]);
+		vo.setOrderCarAmt2(data[18]);
+
+		vo.setCancelHouse2(data[19]);
+		vo.setCancelAmt2(data[20]);
+		vo.setCancelCar2(data[21]);
+		vo.setCancelCarAmt2(data[22]);
+		//--3-------------
+		vo.setDate3(wedMD);	
+		data = this.transferData(projectId, projectCode, wedStr, 1);
+		vo.setPersonCnt3(data[0]);
+		vo.setTelCnt3(data[1]);
+		vo.setAgainCnt3(data[2]);
+		
+		vo.setDealHouse3(data[3]);
+		vo.setDealAmt3(data[4]);
+		vo.setDealCar3(data[5]);
+		vo.setDealCarAmt3(data[6]);
+		
+		vo.setDepositHouse3(data[7]);
+		vo.setDepositAmt3(data[8]);
+		vo.setDepositCar3(data[9]);
+		vo.setDepositCarAmt3(data[10]);	
+
+		vo.setFillHouse3(data[11]);
+		vo.setFillAmt3(data[12]);
+		vo.setFillCar3(data[13]);
+		vo.setFillCarAmt3(data[14]);
+		
+		vo.setOrderHouse3(data[15]);
+		vo.setOrderAmt3(data[16]);
+		vo.setOrderCar3(data[17]);
+		vo.setOrderCarAmt3(data[18]);
+
+		vo.setCancelHouse3(data[19]);
+		vo.setCancelAmt3(data[20]);
+		vo.setCancelCar3(data[21]);
+		vo.setCancelCarAmt3(data[22]);
+		//--4-------------
+		vo.setDate4(thuMD);	
+		data = this.transferData(projectId, projectCode, thuStr, 1);
+		vo.setPersonCnt4(data[0]);
+		vo.setTelCnt4(data[1]);
+		vo.setAgainCnt4(data[2]);
+		
+		vo.setDealHouse4(data[3]);
+		vo.setDealAmt4(data[4]);
+		vo.setDealCar4(data[5]);
+		vo.setDealCarAmt4(data[6]);
+		
+		vo.setDepositHouse4(data[7]);
+		vo.setDepositAmt4(data[8]);
+		vo.setDepositCar4(data[9]);
+		vo.setDepositCarAmt4(data[10]);	
+
+		vo.setFillHouse4(data[11]);
+		vo.setFillAmt4(data[12]);
+		vo.setFillCar4(data[13]);
+		vo.setFillCarAmt4(data[14]);
+		
+		vo.setOrderHouse4(data[15]);
+		vo.setOrderAmt4(data[16]);
+		vo.setOrderCar4(data[17]);
+		vo.setOrderCarAmt4(data[18]);
+
+		vo.setCancelHouse4(data[19]);
+		vo.setCancelAmt4(data[20]);
+		vo.setCancelCar4(data[21]);
+		vo.setCancelCarAmt4(data[22]);
+		//--5-------------
+		vo.setDate5(friMD);	
+		data = this.transferData(projectId, projectCode, friStr, 1);
+		vo.setPersonCnt5(data[0]);
+		vo.setTelCnt5(data[1]);
+		vo.setAgainCnt5(data[2]);
+		
+		vo.setDealHouse5(data[3]);
+		vo.setDealAmt5(data[4]);
+		vo.setDealCar5(data[5]);
+		vo.setDealCarAmt5(data[6]);
+		
+		vo.setDepositHouse5(data[7]);
+		vo.setDepositAmt5(data[8]);
+		vo.setDepositCar5(data[9]);
+		vo.setDepositCarAmt5(data[10]);	
+
+		vo.setFillHouse5(data[11]);
+		vo.setFillAmt5(data[12]);
+		vo.setFillCar5(data[13]);
+		vo.setFillCarAmt5(data[14]);
+		
+		vo.setOrderHouse5(data[15]);
+		vo.setOrderAmt5(data[16]);
+		vo.setOrderCar5(data[17]);
+		vo.setOrderCarAmt5(data[18]);
+
+		vo.setCancelHouse5(data[19]);
+		vo.setCancelAmt5(data[20]);
+		vo.setCancelCar5(data[21]);
+		vo.setCancelCarAmt5(data[22]);
+		//--6-------------
+		vo.setDate6(satMD);	
+		data = this.transferData(projectId, projectCode, satStr, 1);
+		vo.setPersonCnt6(data[0]);
+		vo.setTelCnt6(data[1]);
+		vo.setAgainCnt6(data[2]);
+		
+		vo.setDealHouse6(data[3]);
+		vo.setDealAmt6(data[4]);
+		vo.setDealCar6(data[5]);
+		vo.setDealCarAmt6(data[6]);
+		
+		vo.setDepositHouse6(data[7]);
+		vo.setDepositAmt6(data[8]);
+		vo.setDepositCar6(data[9]);
+		vo.setDepositCarAmt6(data[10]);	
+
+		vo.setFillHouse6(data[11]);
+		vo.setFillAmt6(data[12]);
+		vo.setFillCar6(data[13]);
+		vo.setFillCarAmt6(data[14]);
+		
+		vo.setOrderHouse6(data[15]);
+		vo.setOrderAmt6(data[16]);
+		vo.setOrderCar6(data[17]);
+		vo.setOrderCarAmt6(data[18]);
+
+		vo.setCancelHouse6(data[19]);
+		vo.setCancelAmt6(data[20]);
+		vo.setCancelCar6(data[21]);
+		vo.setCancelCarAmt6(data[22]);
+		//--7-------------
+		vo.setDate7(sundayMD);	
+		data = this.transferData(projectId, projectCode, sundayStr, 1);
+		vo.setPersonCnt7(data[0]);
+		vo.setTelCnt7(data[1]);
+		vo.setAgainCnt7(data[2]);
+		
+		vo.setDealHouse7(data[3]);
+		vo.setDealAmt7(data[4]);
+		vo.setDealCar7(data[5]);
+		vo.setDealCarAmt7(data[6]);
+		
+		vo.setDepositHouse7(data[7]);
+		vo.setDepositAmt7(data[8]);
+		vo.setDepositCar7(data[9]);
+		vo.setDepositCarAmt7(data[10]);	
+
+		vo.setFillHouse7(data[11]);
+		vo.setFillAmt7(data[12]);
+		vo.setFillCar7(data[13]);
+		vo.setFillCarAmt7(data[14]);
+		
+		vo.setOrderHouse7(data[15]);
+		vo.setOrderAmt7(data[16]);
+		vo.setOrderCar7(data[17]);
+		vo.setOrderCarAmt7(data[18]);
+
+		vo.setCancelHouse7(data[19]);
+		vo.setCancelAmt7(data[20]);
+		vo.setCancelCar7(data[21]);
+		vo.setCancelCarAmt7(data[22]);
+		//--本週累計-------------
+		vo.setPersonCntWeek(vo.getPersonCnt1()+vo.getPersonCnt2()+vo.getPersonCnt3()+vo.getPersonCnt4()+vo.getPersonCnt5()+vo.getPersonCnt6()+vo.getPersonCnt7());
+		vo.setTelCntWeek(vo.getTelCnt1()+vo.getTelCnt2()+vo.getTelCnt3()+vo.getTelCnt4()+vo.getTelCnt5()+vo.getTelCnt6()+vo.getTelCnt7());
+		vo.setAgainCntWeek(vo.getAgainCnt1()+vo.getAgainCnt2()+vo.getAgainCnt3()+vo.getAgainCnt4()+vo.getAgainCnt5()+vo.getAgainCnt6()+vo.getAgainCnt7());
+		
+		vo.setDealHouseWeek(vo.getDealHouse1()+vo.getDealHouse2()+vo.getDealHouse3()+vo.getDealHouse4()+vo.getDealHouse5()+vo.getDealHouse6()+vo.getDealHouse7());
+		vo.setDealAmtWeek(vo.getDealAmt1()+vo.getDealAmt2()+vo.getDealAmt3()+vo.getDealAmt4()+vo.getDealAmt5()+vo.getDealAmt6()+vo.getDealAmt7());
+		vo.setDealCarWeek(vo.getDealCar1()+vo.getDealCar2()+vo.getDealCar3()+vo.getDealCar4()+vo.getDealCar5()+vo.getDealCar6()+vo.getDealCar7());
+		vo.setDealCarAmtWeek(vo.getDealCarAmt1()+vo.getDealCarAmt2()+vo.getDealCarAmt3()+vo.getDealCarAmt4()+vo.getDealCarAmt5()+vo.getDealCarAmt6()+vo.getDealCarAmt7());
+		
+		vo.setDepositHouseWeek(vo.getDepositHouse1()+vo.getDepositHouse2()+vo.getDepositHouse3()+vo.getDepositHouse4()+vo.getDepositHouse5()+vo.getDepositHouse6()+vo.getDepositHouse7());
+		vo.setDepositAmtWeek(vo.getDepositAmt1()+vo.getDepositAmt2()+vo.getDepositAmt3()+vo.getDepositAmt4()+vo.getDepositAmt5()+vo.getDepositAmt6()+vo.getDepositAmt7());
+		vo.setDepositCarWeek(vo.getDepositCar1()+vo.getDepositCar2()+vo.getDepositCar3()+vo.getDepositCar4()+vo.getDepositCar5()+vo.getDepositCar6()+vo.getDepositCar7());
+		vo.setDepositCarAmtWeek(vo.getDepositCarAmt1()+vo.getDepositCarAmt2()+vo.getDepositCarAmt3()+vo.getDepositCarAmt4()+vo.getDepositCarAmt5()+vo.getDepositCarAmt6()+vo.getDepositCarAmt7());
+		
+		vo.setFillHouseWeek(vo.getFillHouse1()+vo.getFillHouse2()+vo.getFillHouse3()+vo.getFillHouse4()+vo.getFillHouse5()+vo.getFillHouse6()+vo.getFillHouse7());
+		vo.setFillAmtWeek(vo.getFillAmt1()+vo.getFillAmt2()+vo.getFillAmt3()+vo.getFillAmt4()+vo.getFillAmt5()+vo.getFillAmt6()+vo.getFillAmt7());
+		vo.setFillCarWeek(vo.getFillCar1()+vo.getFillCar2()+vo.getFillCar3()+vo.getFillCar4()+vo.getFillCar5()+vo.getFillCar6()+vo.getFillCar7());
+		vo.setFillCarAmtWeek(vo.getFillCarAmt1()+vo.getFillCarAmt2()+vo.getFillCarAmt3()+vo.getFillCarAmt4()+vo.getFillCarAmt5()+vo.getFillCarAmt6()+vo.getFillCarAmt7());
+		
+		vo.setOrderHouseWeek(vo.getOrderHouse1()+vo.getOrderHouse2()+vo.getOrderHouse3()+vo.getOrderHouse4()+vo.getOrderHouse5()+vo.getOrderHouse6()+vo.getOrderHouse7());
+		vo.setOrderAmtWeek(vo.getOrderAmt1()+vo.getOrderAmt2()+vo.getOrderAmt3()+vo.getOrderAmt4()+vo.getOrderAmt5()+vo.getOrderAmt6()+vo.getOrderAmt7());
+		vo.setOrderCarWeek(vo.getOrderCar1()+vo.getOrderCar2()+vo.getOrderCar3()+vo.getOrderCar4()+vo.getOrderCar5()+vo.getOrderCar6()+vo.getOrderCar7());
+		vo.setOrderCarAmtWeek(vo.getOrderCarAmt1()+vo.getOrderCarAmt2()+vo.getOrderCarAmt3()+vo.getOrderCarAmt4()+vo.getOrderCarAmt5()+vo.getOrderCarAmt6()+vo.getOrderCarAmt7());
+		
+		vo.setCancelHouseWeek(vo.getCancelHouse1()+vo.getCancelHouse2()+vo.getCancelHouse3()+vo.getCancelHouse4()+vo.getCancelHouse5()+vo.getCancelHouse6()+vo.getCancelHouse7());
+		vo.setCancelAmtWeek(vo.getCancelAmt1()+vo.getCancelAmt2()+vo.getCancelAmt3()+vo.getCancelAmt4()+vo.getCancelAmt5()+vo.getCancelAmt6()+vo.getCancelAmt7());
+		vo.setCancelCarWeek(vo.getCancelCar1()+vo.getCancelCar2()+vo.getCancelCar3()+vo.getCancelCar4()+vo.getCancelCar5()+vo.getCancelCar6()+vo.getCancelCar7());
+		vo.setCancelCarAmtWeek(vo.getCancelCarAmt1()+vo.getCancelCarAmt2()+vo.getCancelCarAmt3()+vo.getCancelCarAmt4()+vo.getCancelCarAmt5()+vo.getCancelCarAmt6()+vo.getCancelCarAmt7());
+		//--上周累計-------------
+		data = this.transferData(projectId, projectCode, mondayStr, 2);//注意要用星期一
+		vo.setPersonCntWeekAcc(data[0]);
+		vo.setTelCntWeekAcc(data[1]);
+		vo.setAgainCntWeekAcc(data[2]);
+		
+		vo.setDealHouseWeekAcc(data[3]);
+		vo.setDealAmtWeekAcc(data[4]);
+		vo.setDealCarWeekAcc(data[5]);
+		vo.setDealCarAmtWeekAcc(data[6]);
+		
+		vo.setDepositHouseWeekAcc(data[7]);
+		vo.setDepositAmtWeekAcc(data[8]);
+		vo.setDepositCarWeekAcc(data[9]);
+		vo.setDepositCarAmtWeekAcc(data[10]);	
+
+		vo.setFillHouseWeekAcc(data[11]);
+		vo.setFillAmtWeekAcc(data[12]);
+		vo.setFillCarWeekAcc(data[13]);
+		vo.setFillCarAmtWeekAcc(data[14]);
+		
+		vo.setOrderHouseWeekAcc(data[15]);
+		vo.setOrderAmtWeekAcc(data[16]);
+		vo.setOrderCarWeekAcc(data[17]);
+		vo.setOrderCarAmtWeekAcc(data[18]);
+
+		vo.setCancelHouseWeekAcc(data[19]);
+		vo.setCancelAmtWeekAcc(data[20]);
+		vo.setCancelCarWeekAcc(data[21]);
+		vo.setCancelCarAmtWeekAcc(data[22]);
+		//--總累計-------------
+		vo.setPersonCntTotal(vo.getPersonCntWeek()+vo.getPersonCntWeekAcc());
+		vo.setTelCntTotal(vo.getTelCntWeek()+vo.getTelCntWeekAcc());
+		vo.setAgainCntTotal(vo.getAgainCntWeek()+vo.getAgainCntWeekAcc());
+		
+		vo.setDealHouseTotal(vo.getDealHouseWeek()+vo.getDealHouseWeekAcc());
+		vo.setDealAmtTotal(vo.getDealAmtWeek()+vo.getDealAmtWeekAcc());
+		vo.setDealCarTotal(vo.getDealCarWeek()+vo.getDealCarWeekAcc());
+		vo.setDealCarAmtTotal(vo.getDealCarAmtWeek()+vo.getDealCarAmtWeekAcc());
+		
+		vo.setDepositHouseTotal(vo.getDepositHouseWeek()+vo.getDepositHouseWeekAcc());
+		vo.setDepositAmtTotal(vo.getDepositAmtWeek()+vo.getDepositAmtWeekAcc());
+		vo.setDepositCarTotal(vo.getDepositCarWeek()+vo.getDepositCarWeekAcc());
+		vo.setDepositCarAmtTotal(vo.getDepositCarAmtWeek()+vo.getDepositCarAmtWeekAcc());
+		
+		vo.setFillHouseTotal(vo.getFillHouseWeek()+vo.getFillHouseWeekAcc());
+		vo.setFillAmtTotal(vo.getFillAmtWeek()+vo.getFillAmtWeekAcc());
+		vo.setFillCarTotal(vo.getFillCarWeek()+vo.getFillCarWeekAcc());
+		vo.setFillCarAmtTotal(vo.getFillCarAmtWeek()+vo.getFillCarAmtWeekAcc());
+		
+		vo.setOrderHouseTotal(vo.getOrderHouseWeek()+vo.getOrderHouseWeekAcc());
+		vo.setOrderAmtTotal(vo.getOrderAmtWeek()+vo.getOrderAmtWeekAcc());
+		vo.setOrderCarTotal(vo.getOrderCarWeek()+vo.getOrderCarWeekAcc());
+		vo.setOrderCarAmtTotal(vo.getOrderCarAmtWeek()+vo.getOrderCarAmtWeekAcc());
+		
+		vo.setCancelHouseTotal(vo.getCancelHouseWeek()+vo.getCancelHouseWeekAcc());
+		vo.setCancelAmtTotal(vo.getCancelAmtWeek()+vo.getCancelAmtWeekAcc());
+		vo.setCancelCarTotal(vo.getCancelCarWeek()+vo.getCancelCarWeekAcc());
+		vo.setCancelCarAmtTotal(vo.getCancelCarAmtWeek()+vo.getCancelCarAmtWeekAcc());
+		//---%-----
+		if(vo.getTotalHouse() != 0 && vo.getTotalAmt() != 0 && vo.getTotalCar() != 0) {
+			vo.setDealHouseTTP(vo.getDealHouseTotal()/vo.getTotalHouse());
+			vo.setDealAmtTTP(vo.getDealAmtTotal()/vo.getTotalAmt());
+			vo.setDealCarTTP(vo.getDealCarTotal()/vo.getTotalCar());
+			vo.setDealCarAmtTTP(0);
+			
+			vo.setDepositHouseTTP(vo.getDepositHouseTotal()/vo.getTotalHouse());
+			vo.setDepositAmtTTP(vo.getDepositAmtTotal()/vo.getTotalAmt());
+			vo.setDepositCarTTP(vo.getDepositCarTotal()/vo.getTotalCar());
+			vo.setDepositCarAmtTTP(0);
+			
+			vo.setFillHouseTTP(vo.getFillHouseTotal()/vo.getTotalHouse());
+			vo.setFillAmtTTP(vo.getFillAmtTotal()/vo.getTotalAmt());
+			vo.setFillCarTTP(vo.getFillCarTotal()/vo.getTotalCar());
+			vo.setFillCarAmtTTP(0);
+			
+			vo.setOrderHouseTTP(vo.getOrderHouseTotal()/vo.getTotalHouse());
+			vo.setOrderAmtTTP(vo.getOrderAmtTotal()/vo.getTotalAmt());
+			vo.setOrderCarTTP(vo.getOrderCarTotal()/vo.getTotalCar());
+			vo.setOrderCarAmtTTP(0);
+			
+			vo.setCancelHouseTTP(vo.getCancelHouseTotal()/vo.getTotalHouse());
+			vo.setCancelAmtTTP(vo.getCancelAmtTotal()/vo.getTotalAmt());
+			vo.setCancelCarTTP(vo.getCancelCarTotal()/vo.getTotalCar());
+			vo.setCancelCarAmtTTP(0);
+		}
+		
+		
+		return vo;
+	}
+	
+	private int[] transferData(Long projectId, String projectCode, String calDate, int type) {
+		int[] aryInt = new int[23];
+		List<Object[]> obj_custDaily = null;
+		List<Object[]> obj_sales = null;
+		
+		if(type == 1) {//1=每日 2=上周累計
+			obj_custDaily = visitorDao.customerCountByDateAndProject(projectCode, calDate);//當週來人來電0=來人/來電, 1=數量
+			obj_sales = visitorDao.salesDataByDateAndProject(projectId, calDate);//銷售紀錄=>0=類別 1=戶數 2=金額
+		}else {
+			obj_custDaily = visitorDao.customerCountByLastWeekAndProject(projectCode, calDate);//當週來人來電0=來人/來電, 1=數量
+			obj_sales = visitorDao.salesDataByLastWeekAndProject(projectId, calDate);//銷售紀錄=>0=類別 1=戶數 2=金額
+		}
+		
+		//來人 來電 回籠數
+		for(Object[] ary : obj_custDaily) {
+			if(ary[0].equals("A")) {//來人
+				aryInt[0] = Integer.parseInt(""+ary[1]);
+			}else if(ary[0].equals("B")) {//來電
+				aryInt[1] = Integer.parseInt(""+ary[1]);
+			}else if(ary[0].equals("F")) {//回籠	
+				aryInt[2] = Integer.parseInt(""+ary[1]);
+			}
+		}
+		//銷售紀錄
+		for(Object[] ary : obj_sales) {
+			if(ary[0].equals("B1")) {//簽約 TODO:簽約 =成交 ??
+				aryInt[3] = Integer.parseInt(""+ary[1]);//成交戶數
+				aryInt[4] = Integer.parseInt(""+ary[2]);//成交金額
+				aryInt[5] = 0;//成交車數
+				aryInt[6] = 0;//成交車金額
+				
+				aryInt[11] = Integer.parseInt(""+ary[1]);//補足戶數
+				aryInt[12] = Integer.parseInt(""+ary[2]);//補足金額
+				aryInt[13] = 0;//補足訂車
+				aryInt[14] = 0;//補足車金額
+				
+				aryInt[15] = Integer.parseInt(""+ary[1]);//補足戶數
+				aryInt[16] = Integer.parseInt(""+ary[2]);//補足金額
+				aryInt[17] = 0;//補足訂車
+				aryInt[18] = 0;//補足車金額
+			}else if(ary[0].equals("B0")) {//訂金
+				aryInt[7] = Integer.parseInt(""+ary[1]);//小訂戶數
+				aryInt[8] = Integer.parseInt(""+ary[2]);//小訂金額
+				aryInt[9] = 0;//小訂車
+				aryInt[10] = 0;//小訂車金額
+			}else if(ary[0].equals("D0")) {//退訂	
+				aryInt[19] = Integer.parseInt(""+ary[1]);//退戶戶數
+				aryInt[20] = Integer.parseInt(""+ary[2]);//退戶金額
+				aryInt[21] = 0;//退戶訂車
+				aryInt[22] = 0;//退戶車金額
+			}
+		}
+			
+		return aryInt;
 	}
 }

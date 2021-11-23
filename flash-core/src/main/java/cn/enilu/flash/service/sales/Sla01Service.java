@@ -49,7 +49,23 @@ public class Sla01Service extends BaseService<Sla01,Long,Sla01Repository>{
 		List<Sla01> sla01s = this.findNotSaleHouse(projectNo);
 		
 		for(Sla01 sla01 : sla01s) {
-			SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01005()+"棟，戶號="+sla01.getSla01006());//(id, 棟別,戶號)
+			//SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01005()+"棟，戶號="+sla01.getSla01006());//(id, 棟別,戶號)
+			SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01006());//(id, 戶號)
+			list.add(vo);
+		}
+		return list;
+	}
+	
+	/**
+	 * 取得專案下所有房屋
+	 * @param projectId
+	 * @return
+	 */
+	public List<SalesVo> findSaleHouseByProjectNo(String projectNo) {
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		List<Sla01> sla01s = sla01Repository.findBySla01003(projectNo);
+		for(Sla01 sla01 : sla01s) {
+			SalesVo vo = new SalesVo(""+sla01.getId(),sla01.getSla01006());//(id, 戶號)
 			list.add(vo);
 		}
 		return list;

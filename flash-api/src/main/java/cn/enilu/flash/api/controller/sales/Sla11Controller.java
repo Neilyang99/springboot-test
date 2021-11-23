@@ -33,6 +33,7 @@ public class Sla11Controller extends BaseController{
 	@Autowired
 	private Sla20Service sla20Service;
 	
+	
 	@RequestMapping(value = "/visitorList",method = RequestMethod.GET)
 	public Object list(Long visitorId) {
 		if(StringUtil.isNullOrEmpty(visitorId)) {

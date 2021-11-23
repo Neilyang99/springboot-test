@@ -121,6 +121,30 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 	List<Object[]> houseTypeBySla01002(Long projectId);
 	
 	//for 銷況表_總銷---------------
-	@Query(value = "SELECT sla00028,sla00029,(sla00011+sla00012+sla00013+sla00014) totalQty,(sla00018+sla00019+sla00020+sla00021) soldQty FROM sla00 WHERE id=?1", nativeQuery = true)
+	@Query(value = "SELECT sla00028,sla00029,(sla00011+sla00012+sla00013+sla00014) totalQty,(sla00018+sla00019+sla00020+sla00021) soldQty,(sla00015+sla00017) totalCar FROM sla00 WHERE id=?1", nativeQuery = true)
 	List<Object[]> projectStatusById(Long projectId);
+	
+	//for 週報表_實際銷售---------------
+	@Query(value = "SELECT COUNT(1),SUM(sla20068) FROM sla20 WHERE sla20002=?1 AND ( sla20005 LIKE 'B%' OR sla20005 LIKE 'E%') GROUP BY sla20002", nativeQuery = true)
+	List<Object[]> actualSalesByProjectId(Long projectId);
+	
+	//for 週報表_上周累計的來人/來電/回籠---------------
+	@Query(value = "SELECT sla10004,COUNT(1) FROM sla10 WHERE sla10002=?1 AND sla10013<?2 GROUP BY sla10004 UNION ALL SELECT b.sla11003,COUNT(1) FROM sla10 a INNER JOIN sla11 b ON a.id=b.sla11002 AND b.sla11003='F' WHERE a.sla10002=?1 AND b.sla11004<?2 GROUP BY a.sla10002", nativeQuery = true)
+	List<Object[]> customerCountByLastWeekAndProject(String projectCode,String date);
+	
+	//for 週報表_當日來人來電回籠數量---------------
+	@Query(value = "SELECT sla10004,COUNT(1) FROM sla10 WHERE sla10002=?1 AND sla10013 = ?2 GROUP BY sla10004,sla10013 " + 
+			"UNION ALL " + 
+			"SELECT b.sla11003,COUNT(1) FROM sla10 a INNER JOIN sla11 b ON a.id=b.sla11002 AND b.sla11003='F' WHERE a.sla10002=?1 AND b.sla11004=?2 GROUP BY a.sla10002", nativeQuery = true)
+	List<Object[]> customerCountByDateAndProject(String projectCode,String date);
+	
+	//for 週報表_當日銷售紀錄---------------
+	@Query(value = "SELECT sla20005,COUNT(1),sla20068 FROM sla20 WHERE sla20002=?1 AND sla20004=?2 GROUP BY sla20005", nativeQuery = true)
+	List<Object[]> salesDataByDateAndProject(Long projectId,String date);
+	
+	//for 週報表_上周累計銷售紀錄---------------
+	@Query(value = "SELECT sla20005,COUNT(1),sla20068 FROM sla20 WHERE sla20002=?1 AND sla20004<?2 GROUP BY sla20005", nativeQuery = true)
+	List<Object[]> salesDataByLastWeekAndProject(Long projectId,String date);
+	
+
 }
