@@ -359,6 +359,37 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 	}
 	
 	/**
+	 * 取得年齡總數量
+	 * @param projectCode
+	 * @return
+	 */
+	public List<SalesVo> countAgeBySla10002(String projectCode) {
+		
+		List<SalesVo> list = new ArrayList<SalesVo>();
+		HashMap<String, String> mp = new HashMap<String, String>();
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("年齡選項");
+		for(DictVo vo : dictList) {
+    		mp.put(vo.getKey(), vo.getValue());
+    	}
+		
+		//Get Data
+		List<Object[]> objs = visitorDao.countAgeBySla10002(projectCode);
+		
+		for(Object[] ary : objs) {
+			SalesVo vo = new SalesVo();
+			String name = mp.get(""+ary[1]);
+			vo.setKey((""+ary[1])==null || (""+ary[1]).isEmpty()?"":(""+ary[1]));//項目
+			vo.setValue(""+ary[2]);//筆數
+			vo.setName(name==null || name.isEmpty()?"N/A":name);//項目名稱
+			
+			list.add(vo);
+		}
+		
+		return list;
+		
+	}
+	
+	/**
 	 * 取得來客人數
 	 * @param projectCode
 	 * @param type=year/quarter/month
@@ -374,6 +405,8 @@ public class VisitorService extends BaseService<Visitor,Long,VisitorRepository>{
 			objs = visitorDao.countVisitorBySla10002AndYear(projectCode);
 		}else if(type.equals("quarter")) {
 			objs = visitorDao.countVisitorBySla10002AndQuarter(projectCode);
+		}else if(type.equals("week")) {	
+			objs = visitorDao.countVisitorBySla10002AndWeek(projectCode);
 		}else {
 			objs = visitorDao.countVisitorBySla10002(projectCode);
 		}

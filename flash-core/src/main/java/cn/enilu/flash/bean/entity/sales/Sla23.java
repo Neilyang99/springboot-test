@@ -72,6 +72,8 @@ public class Sla23 extends BaseEntity {
 	private String sla23047; //支票號碼
 	private String sla23048; //票據到期日
 	private String sla23049; //備註
+	private String sla23050; //交易批次
+	private String sla23051; //後五碼
 	private String sla23052; //資料狀態
 
 

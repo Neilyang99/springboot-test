@@ -82,6 +82,10 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 	@Query(value = "SELECT sla10002,sla10020,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10020", nativeQuery = true)
 	List<Object[]> countMotivationBySla10002(String projectCode);
 	
+	//for 客戶資料圖表 :年齡總數量---------------
+	@Query(value = "SELECT sla10002,sla10017,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10017", nativeQuery = true)
+	List<Object[]> countAgeBySla10002(String projectCode);
+	
 	//for 客戶資料圖表 :來客量總數量(月)---------------
 	@Query(value = "SELECT sla10002,count(1),substr(sla10013,1,6) FROM sla10 where sla10002=?1 group by sla10002,substr(sla10013,1,6)", nativeQuery = true)
 	List<Object[]> countVisitorBySla10002(String projectCode);
@@ -93,6 +97,10 @@ public interface VisitorRepository extends BaseRepository<Visitor, Long>{
 	//for 客戶資料圖表 :來客量總數量(年)---------------
 	@Query(value = "SELECT sla10002,count(1),YEAR(sla10013)AS yr FROM sla10 where sla10002=?1 group by sla10002,yr", nativeQuery = true)
 	List<Object[]> countVisitorBySla10002AndYear(String projectCode);
+
+	//for 客戶資料圖表 :來客量總數量(季)---------------
+	@Query(value = "SELECT sla10002,count(1),CONCAT(YEAR(sla10013),'-',WEEK(sla10013),'W ') AS yw FROM sla10 where sla10002=?1 group by sla10002,yw", nativeQuery = true)
+	List<Object[]> countVisitorBySla10002AndWeek(String projectCode);
 	
 	//for 客戶資料圖表 :位置總數---------------
 	@Query(value = "SELECT sla10002,sla10016,count(1) FROM sla10 where sla10002=?1 group by sla10002,sla10016", nativeQuery = true)
