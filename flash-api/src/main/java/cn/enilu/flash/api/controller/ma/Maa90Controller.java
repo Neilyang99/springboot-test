@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
@@ -30,14 +32,16 @@ public class Maa90Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String name) {
+	public Object list(@RequestParam(required = false) String selMaa90003) {
 		Page<Maa90> page = new PageFactory<Maa90>().defaultPage();
-		if(StringUtil.isNullOrEmpty(name)) {
+		if(StringUtil.isNullOrEmpty(selMaa90003)) {
 			
 		}else {
-			//page.addFilter( "maa00004", SearchFilter.Operator.LIKE, name);
+			page.addFilter( "maa90003", SearchFilter.Operator.LIKE, selMaa90003);
 		}
+		page.setSort(Sort.by(Sort.Direction.ASC,"maa90004"));
 		page = maa90Service.queryPage(page);
+		
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
         
@@ -57,7 +61,7 @@ public class Maa90Controller extends BaseController{
 	
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id) {
-		maa90Service.delete(id);
+		maa90Service.delete(id);//TODO: 不可以實體刪除
         return Rets.success();
     }
 	

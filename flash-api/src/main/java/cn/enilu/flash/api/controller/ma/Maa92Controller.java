@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
@@ -30,13 +32,20 @@ public class Maa92Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String name) {
+	public Object list(@RequestParam(required = false) String name,
+					   @RequestParam(required = false) String firstId,
+					   @RequestParam(required = false) String secId) {
 		Page<Maa92> page = new PageFactory<Maa92>().defaultPage();
-		if(StringUtil.isNullOrEmpty(name)) {
-			
-		}else {
-			//page.addFilter( "maa00004", SearchFilter.Operator.LIKE, name);
+		if(!StringUtil.isNullOrEmpty(name)) {
+			page.addFilter( "maa92007", SearchFilter.Operator.LIKE, name);
 		}
+		if(!StringUtil.isNullOrEmpty(firstId)) {
+			page.addFilter( "maa92002", SearchFilter.Operator.EQ, firstId);
+		}
+		if(!StringUtil.isNullOrEmpty(secId)) {
+			page.addFilter( "maa92003", SearchFilter.Operator.EQ, secId);
+		}
+		page.setSort(Sort.by(Sort.Direction.ASC,"maa92012"));
 		page = maa92Service.queryPage(page);
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
@@ -60,6 +69,11 @@ public class Maa92Controller extends BaseController{
 		maa92Service.delete(id);
         return Rets.success();
     }
+	
+	@RequestMapping(value = "/selectBudget",method = RequestMethod.GET)
+	public Object selectBudget() {
+		return Rets.success(maa92Service.queryBudgetItem());
+	}
 	
 	
 }

@@ -5,9 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
@@ -30,13 +32,15 @@ public class Maa91Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String name) {
+	public Object list(@RequestParam(required = false) String name,@RequestParam(required = false) String typeId) {
 		Page<Maa91> page = new PageFactory<Maa91>().defaultPage();
-		if(StringUtil.isNullOrEmpty(name)) {
-			
-		}else {
-			//page.addFilter( "maa00004", SearchFilter.Operator.LIKE, name);
+		if(!StringUtil.isNullOrEmpty(name)) {
+			page.addFilter( "maa91005", SearchFilter.Operator.LIKE, name);
 		}
+		if(!StringUtil.isNullOrEmpty(typeId)) {
+			page.addFilter( "maa91002", SearchFilter.Operator.EQ, typeId);
+		}
+		page.setSort(Sort.by(Sort.Direction.ASC,"maa91006"));
 		page = maa91Service.queryPage(page);
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);

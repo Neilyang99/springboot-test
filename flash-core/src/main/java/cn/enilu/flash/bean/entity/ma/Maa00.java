@@ -9,8 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import cn.enilu.flash.bean.entity.BaseEntity;
 import lombok.Data;
 
-@Entity(name = "maa01")
-@Table(appliesTo = "maa01",comment = "工程案基本資料表")
+@Entity(name = "maa00")
+@Table(appliesTo = "maa00",comment = "工程案基本資料表")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class Maa00 extends BaseEntity {
