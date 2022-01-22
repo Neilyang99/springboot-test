@@ -72,4 +72,9 @@ public class Sla00 extends BaseEntity {
 	
 	@Column
 	private String sla00048;//資料狀態
+	private String sla00043; //車位價格
+	private String sla00044; //保留欄位2
+	private String sla00045; //保留欄位3
+	private String sla00046; //保留欄位4
+	private String sla00047; //保留欄位5
 }

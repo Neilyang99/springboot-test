@@ -117,6 +117,12 @@ public class Visitor extends BaseEntity {
 
 	@Column
 	private String sla10034;
+	private String sla10035; //業績歸屬人1
+	private String sla10036; //業績歸屬人2
+	private String sla10037; //業績歸屬人3
+	private String sla10038; //業績歸屬人4
+	private String sla10039; //業績歸屬人5
+	private String sla10040; //資料狀態
 
 	
 }

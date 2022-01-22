@@ -120,5 +120,10 @@ public class Sla20 extends BaseEntity {
 	private String sla20095; //交易備註9
 	private String sla20096; //交易備註10
 	private String sla20097; //資料狀態
+	private String sla20098; //業績歸屬人1
+	private String sla20099; //業績歸屬人2
+	private String sla20100; //業績歸屬人3
+	private String sla20101; //業績歸屬人4
+	private String sla20102; //業績歸屬人5
 
 }

@@ -71,7 +71,7 @@ public class Sla30Controller extends BaseController{
 	 */
 	@RequestMapping(value = "/getSla30005",method = RequestMethod.GET)
 	public Object getSla30005() {
-		List<DictVo> dictList = ConstantFactory.me().findByDictName("行政區選項");
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("區域選項");
 		
 		return Rets.success(dictList);
 	}
