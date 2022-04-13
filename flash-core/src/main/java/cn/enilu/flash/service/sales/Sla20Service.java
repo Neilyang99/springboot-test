@@ -68,11 +68,16 @@ public class Sla20Service extends BaseService<Sla20,Long,Sla20Repository>{
 		sla20.setSla20065(sla01.getSla01024());
 		sla20.setSla20066(sla01.getSla01025());
 		sla20.setSla20067(sla01.getSla01026());
-		sla20.setSla20098(sla10.getSla10035());
-		sla20.setSla20099(sla10.getSla10036());
-		sla20.setSla20100(sla10.getSla10037());
-		sla20.setSla20101(sla10.getSla10038());
-		sla20.setSla20102(sla10.getSla10039());
+		sla20.setSla20098(sla10.getSla10041());
+		sla20.setSla20099(sla10.getSla10042());
+		sla20.setSla20100(sla10.getSla10043());
+		sla20.setSla20101(sla10.getSla10044());
+		sla20.setSla20102(sla10.getSla10045());
+		sla20.setSla20103(sla10.getSla10046());
+		sla20.setSla20104(sla10.getSla10047());
+		sla20.setSla20105(sla10.getSla10048());
+		sla20.setSla20106(sla10.getSla10049());
+		sla20.setSla20107(sla10.getSla10050());
 		
 		if(this.findOrderByProjectAndCustomer(sla01.getSla01002(), sla11.getSla11002()) == null) {
 			sla20 = this.insert(sla20);

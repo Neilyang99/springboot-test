@@ -18,6 +18,8 @@ import cn.enilu.flash.bean.entity.sales.Sla20;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.sales.Sla11Vo;
+import cn.enilu.flash.bean.vo.sales.VisitorNoHandleVo;
+import cn.enilu.flash.security.JwtUtil;
 import cn.enilu.flash.service.sales.Sla11Service;
 import cn.enilu.flash.service.sales.Sla20Service;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
@@ -137,6 +139,37 @@ public class Sla11Controller extends BaseController{
 	public Object findOrderExist(Long visitorId) {
 		
 		List<Sla11> list = sla11Service.getOrderIdBySla11002(visitorId);
+		
+		return Rets.success(list);
+	}
+	
+	/**
+	 * 取得七日內未處理的來客洽詢清單
+	 * @return
+	 */
+	@RequestMapping(value = "/findNoHandleList",method = RequestMethod.GET)
+	public Object findNoHandleList() {
+		
+		List<VisitorNoHandleVo> list = new ArrayList<>();
+		List<Object[]> objs = sla11Service.findNoHandleList(""+JwtUtil.getUserId());
+		for(Object[] ary : objs) {
+			VisitorNoHandleVo vo= new VisitorNoHandleVo();
+			vo.setCustomerId(Long.parseLong(""+ary[0]));
+			vo.setSla11Id(Long.parseLong(""+ary[1]));
+			vo.setSla10002(""+ary[2]);
+			vo.setSla10003(""+ary[3]);
+			vo.setSla10006(""+ary[4]);
+			vo.setSla10010(""+ary[5]);
+			vo.setSla11004(""+ary[6]);
+			vo.setSla11006(""+ary[7]);
+			vo.setSla11008(""+ary[8]);
+			vo.setSla11023(Long.parseLong(""+ary[9]));
+			vo.setSla11024(Long.parseLong(""+ary[10]));
+			vo.setModify_time(""+ary[11]);
+			vo.setDt(Integer.parseInt(""+ary[12]));
+			
+			list.add(vo);
+		}
 		
 		return Rets.success(list);
 	}

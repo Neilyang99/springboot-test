@@ -29,4 +29,8 @@ public class Sla11Service  extends BaseService<Sla11,Long,Sla11Repository>{
 		return sla11Repository.updateOrderIdByLogId(visitorLogId, orderId);
 	}
 	
+	public List<Object[]> findNoHandleList(String salesNo){
+		return sla11Repository.findNoHandleList(salesNo);
+	}
+	
 }

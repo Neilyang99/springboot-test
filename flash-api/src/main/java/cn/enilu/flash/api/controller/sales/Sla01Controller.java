@@ -1,24 +1,32 @@
 package cn.enilu.flash.api.controller.sales;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.entity.sales.Sla01;
+import cn.enilu.flash.bean.entity.system.FileInfo;
+import cn.enilu.flash.bean.enumeration.Permission;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.sales.SalesVo;
 import cn.enilu.flash.bean.vo.sales.Sla01Vo;
 import cn.enilu.flash.service.sales.Sla01Service;
+import cn.enilu.flash.service.system.FileService;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
+import cn.enilu.flash.utils.Maps;
 
 
 @RestController
@@ -27,7 +35,8 @@ public class Sla01Controller extends BaseController{
 
 	@Autowired
     private Sla01Service sla01Service;
-	
+	@Autowired
+    private FileService fileService;
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
 	public Object list(Long sla01002) {
@@ -141,4 +150,28 @@ public class Sla01Controller extends BaseController{
         return Rets.success();
     }
 	
+	@RequestMapping(value = "/saveUpload",method = RequestMethod.POST)
+	public Object saveUploadData(@ModelAttribute @Valid Object obj) {
+		System.out.println("AAAAAAAAAAA="+obj.toString());
+		
+		return Rets.success();
+	}
+	
+	/**
+     * 格式下載
+     * @return
+     */
+    @RequestMapping(value = "/export",method = RequestMethod.GET)
+    public Object export(Long projectId, String projectNo) {
+    	
+    	Map mp = new HashMap();
+    	Sla01 vo = new Sla01();
+    	vo.setSla01002(projectId);
+    	vo.setSla01003(projectNo);
+    	mp.put(projectNo, vo);
+    	//TODO: ??
+    	
+    	FileInfo fileInfo = fileService.createExcel("templates/house.xlsx","房屋資料上傳.xlsx",mp);
+        return Rets.success(fileInfo);
+    }
 }

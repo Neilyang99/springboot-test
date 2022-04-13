@@ -229,4 +229,14 @@ public class VisitorController  extends BaseController {
 		
 		return Rets.success(dictList);
 	}
+	/**
+	 * 取得貸款需求
+	 * @return
+	 */
+	@RequestMapping(value = "/getSla10035",method = RequestMethod.GET)
+	public Object getSla10035() {
+		List<DictVo> dictList = ConstantFactory.me().findByDictName("貸款需求選項");
+		
+		return Rets.success(dictList);
+	}
 }
