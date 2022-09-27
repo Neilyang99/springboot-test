@@ -18,6 +18,7 @@ import cn.enilu.flash.bean.entity.sales.Slb11;
 import cn.enilu.flash.bean.vo.DictVo;
 import cn.enilu.flash.bean.vo.sales.VisitorReportVo;
 import cn.enilu.flash.bean.vo.sales.VisitorSummaryVo;
+import cn.enilu.flash.service.ma.Maa01aService;
 import cn.enilu.flash.service.system.impl.ConstantFactory;
 import cn.enilu.flash.utils.DateUtil;
 
@@ -34,6 +35,9 @@ public class VisitorServiceTest extends BaseApplicationStartTest {
 	
 	@Autowired
 	private VisitorService visitorService;
+	
+	@Autowired
+	private Maa01aService maa01aSer;
 	
 	@Test
 	public void showList() {
@@ -71,8 +75,10 @@ public class VisitorServiceTest extends BaseApplicationStartTest {
 			//Slb11 a11 = slb11service.findBySlb11002(3).get(0);
 			//System.out.println("YYYYYYYYYYYY10002="+a11.getSlb10().getSlb10002());
 			
-			System.out.println("YYYYYDDDDDDDDDD="+this.ll("2021001"));
+			//System.out.println("YYYYYDDDDDDDDDD="+this.ll("2021001"));
 			
+			//List list = maa01aSer.findByMaa01a002((long) 1);
+			//System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTT="+list.size());
 		
 		}catch(Exception e) {
 			e.printStackTrace();

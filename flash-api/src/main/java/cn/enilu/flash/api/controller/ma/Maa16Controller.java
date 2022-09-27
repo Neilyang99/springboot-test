@@ -43,6 +43,19 @@ public class Maa16Controller extends BaseController{
 		return Rets.success(page);
 	}
 	
+	/**
+	 * 取得期別最大值
+	 * @param 工程案ID
+	 * @return
+	 */
+	@RequestMapping(value = "/getMaxPeriod",method = RequestMethod.GET)
+	public Object getMaxPeriod(Long maa00ID) {
+		
+		int count = objService.getMaxPeriod(maa00ID);
+		
+		return Rets.success(count);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa16 obj) {
 		if(obj.getId() == null) {

@@ -44,6 +44,13 @@ public class Maa01aController extends BaseController{
 		return Rets.success(page);
 	}
 	
+	@RequestMapping(value = "/listByProject",method = RequestMethod.GET)
+	public Object listByProject(Long projectId) {
+		List<Maa01a> list = maa01aService.findByMaa01a002(projectId);
+		
+		return Rets.success(list);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa01a maa01a) {
 		if(maa01a.getId() == null) {

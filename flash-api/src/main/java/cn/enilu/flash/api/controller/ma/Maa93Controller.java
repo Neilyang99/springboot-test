@@ -35,7 +35,7 @@ public class Maa93Controller extends BaseController{
 		if(StringUtil.isNullOrEmpty(name)) {
 			
 		}else {
-			//page.addFilter( "maa00004", SearchFilter.Operator.LIKE, name);
+			page.addFilter( "maa93004", SearchFilter.Operator.LIKE, name);
 		}
 		page = maa93Service.queryPage(page);
 		List list = BeanUtil.objectsToMaps(page.getRecords());
@@ -46,13 +46,32 @@ public class Maa93Controller extends BaseController{
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa93 maObj) {
+		
+		String msg = "";
+		
 		if(maObj.getId() == null) {
-			maa93Service.insert(maObj);
+			int cnt = maa93Service.checkVendorIdByNew(maObj.getMaa93011());
+			if(cnt > 0) {
+				msg = "統一編號:"+maObj.getMaa93011()+" 已經存在，請變更。";
+			}else {
+				maa93Service.insert(maObj);
+			}
+			
 		}else {
-			maa93Service.update(maObj);
+			int cnt = maa93Service.checkVendorIdByUpdate(maObj.getId(), maObj.getMaa93011());
+			if(cnt > 0) {
+				msg = "統一編號:"+maObj.getMaa93011()+" 已經存在，請變更。";
+			}else {
+				maa93Service.update(maObj);
+			}
 		}
 		
-		return Rets.success();
+		if(msg == "") {
+			return Rets.success();
+		}else {
+			return Rets.failure(msg);
+		}
+		
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)

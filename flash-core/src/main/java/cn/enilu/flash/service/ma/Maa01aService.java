@@ -15,6 +15,8 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 	@Autowired
 	private Maa01aRepository repository;
 	
-	
+	public List<Maa01a> findByMaa01a002(Long projectId){
+		return repository.findByMaa01a002(projectId);
+	}
 	
 }
