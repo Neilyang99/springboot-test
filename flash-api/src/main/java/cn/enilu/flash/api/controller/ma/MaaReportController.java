@@ -51,6 +51,19 @@ public class MaaReportController extends BaseController{
 		return Rets.success(maaReportService.paymentReport());
 	}
 	
-	
+
+	@RequestMapping(value = "/paymentVendor",method = RequestMethod.GET)
+	public Object paymentVendor(Long projectId, Long vendorId) {
+		
+		
+		return Rets.success(maaReportService.paymentVendor(projectId, 1L));
+	}
+
+	@RequestMapping(value = "/paymentMonthly",method = RequestMethod.GET)
+	public Object paymentMonthly(Long projectId, Long dateId) {
+		
+		
+		return Rets.success(maaReportService.paymentMonthly(projectId));
+	}
 	
 }

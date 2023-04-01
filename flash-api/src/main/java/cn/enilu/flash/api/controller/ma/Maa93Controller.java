@@ -80,5 +80,10 @@ public class Maa93Controller extends BaseController{
         return Rets.success();
     }
 	
+	@RequestMapping(value = "/selectList",method = RequestMethod.GET)
+	public Object selectList() {
+		//TODO: 有效廠商才可以挑選，後續要加入工程案當條件
+		return Rets.success(maa93Service.queryAll());
+	}
 	
 }
