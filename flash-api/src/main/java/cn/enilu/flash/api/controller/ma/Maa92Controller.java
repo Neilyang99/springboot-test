@@ -70,10 +70,21 @@ public class Maa92Controller extends BaseController{
         return Rets.success();
     }
 	
+	/**
+	 * 取出大分類與小分類資料
+	 * @return
+	 */
 	@RequestMapping(value = "/selectBudget",method = RequestMethod.GET)
 	public Object selectBudget() {
 		return Rets.success(maa92Service.queryBudgetItem());
 	}
 	
-	
+	/**
+	 * 根據小分類ID取出項目資料
+	 * @return
+	 */
+	@RequestMapping(value = "/selectItemByLv2",method = RequestMethod.GET)
+	public Object selectItemByLv2(Long lv2Id) {
+		return Rets.success(maa92Service.queryByLv2Id(lv2Id));
+	}
 }

@@ -19,4 +19,14 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 		return repository.findByMaa01a002(projectId);
 	}
 	
+	/**
+	 * 根據工程案與小類別ID取出所有資料
+	 * @param projectId
+	 * @param lv2
+	 * @return
+	 */
+	public List<Maa01a> findByMaa01a002And004(Long projectId, Long lv2){
+		return repository.findByMaa01a002AndMaa01a004(projectId,lv2);
+	}
+	
 }

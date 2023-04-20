@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +49,20 @@ public class Maa01aController extends BaseController{
 	public Object listByProject(Long projectId) {
 		List<Maa01a> list = maa01aService.findByMaa01a002(projectId);
 		
+		return Rets.success(list);
+	}
+	
+	@RequestMapping(value = "/listByPrjLv2",method = RequestMethod.GET)
+	public Object listByPrjLv2(Long projectId, Long lv2) {
+		Page<Maa01a> page = new PageFactory<Maa01a>().defaultPage();
+		page.addFilter( "maa01a002", SearchFilter.Operator.EQ, projectId);
+		page.addFilter( "maa01a004", SearchFilter.Operator.EQ, lv2);
+		page.setSort(Sort.by(Sort.Direction.ASC,"maa01a006"));
+		page = maa01aService.queryPage(page);
+		
+		List list = BeanUtil.objectsToMaps(page.getRecords());
+        page.setRecords(list);
+        
 		return Rets.success(list);
 	}
 	

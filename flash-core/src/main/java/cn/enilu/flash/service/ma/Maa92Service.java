@@ -36,4 +36,28 @@ public class Maa92Service extends BaseService<Maa92,Long,Maa92Repository>{
 		
 		return list;
 	}
+	
+	/**
+	 * 利用小分類的ID取得所有的項目名稱
+	 * @param lv2
+	 * @return
+	 */
+	public List<BudgetItemVo> queryByLv2Id(Long lv2){
+		List<BudgetItemVo> list = new ArrayList<BudgetItemVo>();
+		List<Object[]> objs = maa92Dao.findByMaa92003(lv2);
+		
+		for(Object[] ary : objs) {
+			BudgetItemVo vo = new BudgetItemVo();
+			vo.setFirstId(""+ary[0]);//第一階ID
+			vo.setFirstName(""+ary[1]);//第一階Name
+			vo.setSecId(""+ary[2]);//第2階ID
+			vo.setSecName(""+ary[3]);//第一階Name
+			vo.setItemId(""+ary[4]);//第3階ID
+			vo.setItemName(""+ary[5]);//第3階Name
+			
+			list.add(vo);
+		}
+		
+		return list;
+	}
 }
