@@ -49,12 +49,19 @@ public class Maa01Controller extends BaseController{
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa01 maa01) {
 		if(maa01.getId() == null) {
-			maa01Service.insert(maa01);
+			int count = maa01Service.checkLevel2Data(maa01.getMaa01002(), maa01.getMaa01003(), maa01.getMaa01004());
+			if(count == 0) {
+				maa01Service.insert(maa01);
+				return Rets.success();
+			}else {
+				return Rets.failure("此資料已經存在，不可以新增!!");
+			}
+			
 		}else {
 			maa01Service.update(maa01);
+			return Rets.success();
 		}
 		
-		return Rets.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)

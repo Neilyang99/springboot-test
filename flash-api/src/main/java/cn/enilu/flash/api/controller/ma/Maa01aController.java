@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.ma.Maa01a;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
@@ -28,6 +30,9 @@ public class Maa01aController extends BaseController{
 
 	@Autowired
     private Maa01aService maa01aService;
+	
+	@Autowired
+    private Maa01Service maa01Service;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -66,6 +71,7 @@ public class Maa01aController extends BaseController{
 		return Rets.success(list);
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa01a maa01a) {
 		if(maa01a.getId() == null) {
@@ -74,12 +80,20 @@ public class Maa01aController extends BaseController{
 			maa01aService.update(maa01a);
 		}
 		
+		//更新mma01的小類別預算金額
+		maa01Service.updateBudgeAmountByMaa01004(maa01a.getMaa01a004());
+		
 		return Rets.success();
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
-    public Object remove(Long id) {
+    public Object remove(Long id, Long lv2Id) {
 		maa01aService.delete(id);
+		
+		//更新mma01的小類別預算金額
+		maa01Service.updateBudgeAmountByMaa01004(lv2Id);
+				
         return Rets.success();
     }
 	

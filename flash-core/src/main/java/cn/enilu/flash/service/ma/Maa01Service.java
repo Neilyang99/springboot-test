@@ -13,8 +13,27 @@ import cn.enilu.flash.service.BaseService;
 public class Maa01Service extends BaseService<Maa01,Long,Maa01Repository>{
 	
 	@Autowired
-	private Maa01Repository repository;
+	private Maa01Repository dao;
 	
+	/**
+	 * 檢查資料是否重複
+	 * @param projectId
+	 * @param lv1Id
+	 * @param lv2Id
+	 * @return 0=無重複
+	 */
+	public int checkLevel2Data(Long projectId, Long lv1Id, Long lv2Id) {
+		
+		return dao.checkLevel2Data(projectId, lv1Id, lv2Id);
+		
+	}
 	
-	
+	/**
+	 * 更新小類別的預算金額
+	 * @param lv2Id
+	 * @return
+	 */
+	public int updateBudgeAmountByMaa01004(Long lv2Id) {
+		return dao.updateBudgeAmountByMaa01004(lv2Id);
+	}
 }
