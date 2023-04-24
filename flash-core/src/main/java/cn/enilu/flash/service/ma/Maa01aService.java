@@ -29,4 +29,8 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 		return repository.findByMaa01a002AndMaa01a004(projectId,lv2);
 	}
 	
+	public List<Maa01a> exportToXlsx(Long projectId){
+		//TODO: 要加入資料狀態
+		return repository.findByMaa01a002(projectId);
+	}
 }

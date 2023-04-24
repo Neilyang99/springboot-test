@@ -10,16 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.ma.Maa01a;
+import cn.enilu.flash.bean.entity.system.FileInfo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
+import cn.enilu.flash.service.system.FileService;
 import cn.enilu.flash.utils.BeanUtil;
+import cn.enilu.flash.utils.Maps;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
 
@@ -33,6 +37,9 @@ public class Maa01aController extends BaseController{
 	
 	@Autowired
     private Maa01Service maa01Service;
+	
+	@Autowired
+    private FileService fileService;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -97,5 +104,15 @@ public class Maa01aController extends BaseController{
         return Rets.success();
     }
 	
-	
+	@RequestMapping(value = "/export",method = RequestMethod.GET)
+	public Object export(@RequestParam(required = true) Long prjId) {
+		
+		//List<Maa01a> list = maa01aService.exportToXlsx(prjId);
+		//FileInfo fileInfo = fileService.createExcel("templates/budgetList.xlsx","預算項目清單.xlsx",Maps.newHashMap("list",list));
+		Page<Maa01a> page = new PageFactory<Maa01a>().defaultPage();
+		page.addFilter( "maa01a002", SearchFilter.Operator.EQ, prjId);
+		page = maa01aService.queryPage(page);
+		FileInfo fileInfo = fileService.createExcel("templates/budgetList.xlsx","預算項目清單.xlsx",Maps.newHashMap("list",page.getRecords()));
+		return Rets.success(fileInfo);
+	}
 }

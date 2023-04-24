@@ -14,32 +14,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.constant.factory.PageFactory;
-import cn.enilu.flash.bean.entity.ma.Maa01;
+import cn.enilu.flash.bean.entity.ma.Maa22;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
-import cn.enilu.flash.service.ma.Maa01Service;
+import cn.enilu.flash.service.ma.Maa22Service;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
 
 
 @RestController
-@RequestMapping("/maa01")
-public class Maa01Controller extends BaseController{
+@RequestMapping("/maa22")
+public class Maa22Controller extends BaseController{
 
 	@Autowired
-    private Maa01Service maa01Service;
+    private Maa22Service maa22Service;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(@RequestParam(required = false)  String prjId) {
-		Page<Maa01> page = new PageFactory<Maa01>().defaultPage();
-		
-		if(!StringUtil.isNullOrEmpty(prjId)) {
-			page.addFilter( "maa01002", SearchFilter.Operator.EQ, prjId);
+	public Object list(@RequestParam(required = false) String selMaa22005) {
+		Page<Maa22> page = new PageFactory<Maa22>().defaultPage();
+		if(StringUtil.isNullOrEmpty(selMaa22005)) {
+			
+		}else {
+			page.addFilter( "maa22005", SearchFilter.Operator.LIKE, selMaa22005);
 		}
-		page.setSort(Sort.by(Sort.Direction.ASC,"maa01017"));
-		page = maa01Service.queryPage(page);
+		page.setSort(Sort.by(Sort.Direction.ASC,"maa22003"));
+		page = maa22Service.queryPage(page);
+		
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
         
@@ -47,30 +49,21 @@ public class Maa01Controller extends BaseController{
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public Object add(@ModelAttribute @Valid Maa01 maa01) {
-		if(maa01.getId() == null) {
-			int count = maa01Service.checkLevel2Data(maa01.getMaa01002(), maa01.getMaa01003(), maa01.getMaa01004());
-			if(count == 0) {
-				maa01Service.insert(maa01);
-				return Rets.success();
-			}else {
-				return Rets.failure("此資料已經存在，不可以新增!!");
-			}
-			
+	public Object add(@ModelAttribute @Valid Maa22 maObj) {
+		if(maObj.getId() == null) {
+			maa22Service.insert(maObj);
 		}else {
-			maa01Service.update(maa01);
-			return Rets.success();
+			maa22Service.update(maObj);
 		}
 		
+		return Rets.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id) {
-		maa01Service.delete(id);
+		maa22Service.delete(id);
         return Rets.success();
     }
-	
-	
 	
 	
 }
