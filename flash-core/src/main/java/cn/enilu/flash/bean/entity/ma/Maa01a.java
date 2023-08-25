@@ -1,5 +1,6 @@
 package cn.enilu.flash.bean.entity.ma;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 
@@ -31,6 +32,7 @@ public class Maa01a extends BaseEntity {
 	private String maa01a007; //工程編號
 	private String maa01a008; //工程案代號
 	private String maa01a009; //工程案名稱
+	@Column(name = "maa01a010",columnDefinition = "VARCHAR(256)")
 	private String maa01a010; //工程預算大類別名稱
 	private String maa01a011; //工程預算小類別名稱
 	private String maa01a012; //工程預算項目代號
