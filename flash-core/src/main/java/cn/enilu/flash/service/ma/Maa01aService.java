@@ -33,4 +33,14 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 		//TODO: 要加入資料狀態
 		return repository.findByMaa01a002(projectId);
 	}
+	
+	//工程案是否有預算項目資料
+	public int checkByMaa01a002(Long projectId){
+		return repository.checkfindByMaa01a002(projectId);
+	}
+	
+	//新工程案從預算項目(maa92)新增該工程的預算項目
+	public int insertByNewProject(Long projectId) {
+		return repository.insertByNewProject(projectId);
+	}
 }

@@ -38,14 +38,14 @@ public class Maa01a extends BaseEntity {
 	private String maa01a012; //工程預算項目代號
 	private String maa01a013; //工程預算項目名稱
 	private String maa01a014; //單位
-	private int maa01a015; //預算數量
-	private int maa01a016; //預算單價
-	private int maa01a017; //預算複價
+	private double maa01a015; //預算數量
+	private double maa01a016; //預算單價
+	private double maa01a017; //預算複價
 	private String maa01a018; //預算備註1
 	private String maa01a019; //預算備註2
-	private int maa01a020; //結算數量
-	private int maa01a021; //結算單價
-	private int maa01a022; //結算複價
+	private double maa01a020; //結算數量
+	private double maa01a021; //結算單價
+	private double maa01a022; //結算複價
 	private String maa01a023; //結算備註1
 	private String maa01a024; //結算備註2
 	private String maa01a025; //預算編訂狀態碼

@@ -36,4 +36,18 @@ public class Maa01Service extends BaseService<Maa01,Long,Maa01Repository>{
 	public int updateBudgeAmountByMaa01004(Long lv2Id) {
 		return dao.updateBudgeAmountByMaa01004(lv2Id);
 	}
+	
+	/**
+	 * 根據工程案更新預算金額
+	 * @param Project Id
+	 * @return
+	 */
+	public int updateBudgeAmountByProject(Long projectId) {
+		return dao.updateBudgeAmountByProject(projectId);
+	}
+	
+	//新工程案從預算項目(maa91)新增該工程的預算項目
+	public int insertByNewProject(Long projectId) {
+		return dao.insertByNewProject(projectId);
+	}
 }

@@ -30,8 +30,8 @@ public class Maa92 extends BaseEntity {
 	private String maa92006; //工程預算項目代號
 	private String maa92007; //工程預算項目名稱
 	private String maa92008; //單位
-	private int maa92009; //預設數量
-	private int maa92010; //預設單價
+	private double maa92009; //預設數量
+	private double maa92010; //預設單價
 	private String maa92011; //備註
 	private int maa92012; //排序
 	private String maa92013; //狀態碼

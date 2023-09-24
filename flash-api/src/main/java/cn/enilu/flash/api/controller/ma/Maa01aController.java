@@ -19,6 +19,7 @@ import cn.enilu.flash.bean.entity.ma.Maa01a;
 import cn.enilu.flash.bean.entity.system.FileInfo;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
 import cn.enilu.flash.service.system.FileService;
@@ -32,6 +33,9 @@ import cn.enilu.flash.utils.factory.Page;
 @RequestMapping("/maa01a")
 public class Maa01aController extends BaseController{
 
+	@Autowired
+    private Maa00Service maa00Service;
+	
 	@Autowired
     private Maa01aService maa01aService;
 	
@@ -65,9 +69,10 @@ public class Maa01aController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/listByPrjLv2",method = RequestMethod.GET)
-	public Object listByPrjLv2(Long projectId, Long lv2) {
+	public Object listByPrjLv2(Long projectId, Long lv1, Long lv2) {
 		Page<Maa01a> page = new PageFactory<Maa01a>().defaultPage();
 		page.addFilter( "maa01a002", SearchFilter.Operator.EQ, projectId);
+		page.addFilter( "maa01a003", SearchFilter.Operator.EQ, lv1);
 		page.addFilter( "maa01a004", SearchFilter.Operator.EQ, lv2);
 		page.setSort(Sort.by(Sort.Direction.ASC,"maa01a006"));
 		page = maa01aService.queryPage(page);
@@ -90,16 +95,49 @@ public class Maa01aController extends BaseController{
 		//更新mma01的小類別預算金額
 		maa01Service.updateBudgeAmountByMaa01004(maa01a.getMaa01a004());
 		
+		//更新工程案總預算
+		maa00Service.updateBudgeAmountByProject(maa01a.getMaa01a002());
+		
 		return Rets.success();
 	}
 	
 	@Transactional
+	@RequestMapping(value = "/inertByNewProject", method = RequestMethod.GET)
+	public Object insertByNewProject(Long projectId) {
+		int count = maa01aService.checkByMaa01a002(projectId);
+		if(count == 0) {
+			
+			int cnt = 0; 
+			//新增 maa01 from maa90&maa91
+			maa01Service.insertByNewProject(projectId);
+			//新增 maa01a from maa92
+			cnt = maa01aService.insertByNewProject(projectId);
+			//更新 maa01的預算金額
+			maa01Service.updateBudgeAmountByProject(projectId);
+			//更新工程案總預算
+			maa00Service.updateBudgeAmountByProject(projectId);
+			
+			if(cnt == 0) {
+				return Rets.failure("預算項目新增失敗，請再次新增。");
+			}else {
+				return Rets.success("成功，總共新增 "+cnt+" 筆資料。");
+			}
+			
+		}else {
+			return Rets.failure("此工程案已經有預算項目，不可以新增!!");
+		}
+	}
+	
+	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
-    public Object remove(Long id, Long lv2Id) {
+    public Object remove(Long id, Long projectId, Long lv2Id) {
 		maa01aService.delete(id);
 		
 		//更新mma01的小類別預算金額
 		maa01Service.updateBudgeAmountByMaa01004(lv2Id);
+		
+		//更新工程案總預算
+		maa00Service.updateBudgeAmountByProject(projectId);
 				
         return Rets.success();
     }

@@ -13,8 +13,15 @@ import cn.enilu.flash.service.BaseService;
 public class Maa00Service extends BaseService<Maa00,Long,Maa00Repository>{
 	
 	@Autowired
-	private Maa00Repository repository;
+	private Maa00Repository dao;
 	
-	
+	/**
+	 * 根據工程案更新預算金額
+	 * @param Project Id
+	 * @return
+	 */
+	public int updateBudgeAmountByProject(Long projectId) {
+		return dao.updateBudgeAmountByProject(projectId);
+	}
 	
 }
