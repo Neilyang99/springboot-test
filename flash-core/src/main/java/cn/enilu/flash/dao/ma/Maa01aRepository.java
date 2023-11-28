@@ -18,6 +18,12 @@ public interface Maa01aRepository  extends BaseRepository<Maa01a,Long>{
 	
 	public List<Maa01a> findByMaa01a002AndMaa01a004(Long projectId, Long lv2Id);
 	
+	@Query(value="SELECT a.maa01010,a.maa01011,b.maa01a013,b.maa01a014,b.maa01a015,b.maa01a016,b.maa01a017,c.maa00004,b.maa01a018 FROM maa01 a " + 
+			" LEFT JOIN maa01a b ON a.maa01002=b.maa01a002 AND a.maa01003=b.maa01a003 AND a.maa01004=b.maa01a004  " +
+			" INNER JOIN maa00 c ON a.maa01002=c.id " +
+			" WHERE a.maa01002=?1 ORDER BY a.maa01003,a.maa01004,b.maa01a006", nativeQuery=false)
+	public List exportToExcel(Long projectId);
+	
 	@Modifying
 	@Transactional
 	@Query(value="insert into maa01a (id,maa01a002,maa01a003,maa01a004,maa01a005,maa01a006,maa01a007,maa01a008,maa01a009,maa01a010,maa01a011,maa01a012,maa01a013,maa01a014,maa01a015,maa01a016,maa01a017,maa01a018,create_time,modify_time) " + 

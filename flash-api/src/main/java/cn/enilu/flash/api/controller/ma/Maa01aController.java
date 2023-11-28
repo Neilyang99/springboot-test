@@ -1,5 +1,6 @@
 package cn.enilu.flash.api.controller.ma;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.ma.Maa01a;
 import cn.enilu.flash.bean.entity.system.FileInfo;
 import cn.enilu.flash.bean.vo.front.Rets;
+import cn.enilu.flash.bean.vo.ma.BudgetExcelVo;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
@@ -145,12 +147,8 @@ public class Maa01aController extends BaseController{
 	@RequestMapping(value = "/export",method = RequestMethod.GET)
 	public Object export(@RequestParam(required = true) Long prjId) {
 		
-		//List<Maa01a> list = maa01aService.exportToXlsx(prjId);
-		//FileInfo fileInfo = fileService.createExcel("templates/budgetList.xlsx","預算項目清單.xlsx",Maps.newHashMap("list",list));
-		Page<Maa01a> page = new PageFactory<Maa01a>().defaultPage();
-		page.addFilter( "maa01a002", SearchFilter.Operator.EQ, prjId);
-		page = maa01aService.queryPage(page);
-		FileInfo fileInfo = fileService.createExcel("templates/budgetList.xlsx","預算項目清單.xlsx",Maps.newHashMap("list",page.getRecords()));
-		return Rets.success(fileInfo);
+		List<BudgetExcelVo> list = maa01aService.exportToXlsx(prjId);
+        
+		return Rets.success(list);
 	}
 }
