@@ -18,6 +18,9 @@ public class Sla10Wrapper extends BaseControllerWarpper {
     @Override
     public void warpTheMap(Map<String, Object> map) {
         map.put("sla10004Name", ConstantFactory.me().getDictsByName("來人來電",(String)map.get("sla10004")));
+        if(map.get("modifyBy") != null) {
+        	map.put("modifyName", ConstantFactory.me().getUserNameById((Long)map.get("modifyBy")));
+        }
     }
 
 }
