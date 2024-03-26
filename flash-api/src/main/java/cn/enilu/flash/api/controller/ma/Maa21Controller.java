@@ -32,18 +32,24 @@ public class Maa21Controller extends BaseController{
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(@RequestParam(required = false) String selMaa21002) {
+	public Object list(@RequestParam(required = false) String selMaa21002,String selMaa21003) {
 		Page<Maa21> page = new PageFactory<Maa21>().defaultPage();
 		if(StringUtil.isNullOrEmpty(selMaa21002)) {
 			
 		}else {
 			page.addFilter( "maa21002", SearchFilter.Operator.LIKE, selMaa21002);
 		}
+		if(!StringUtil.isNullOrEmpty(selMaa21003)) {
+			
+			page.addFilter( "maa21003", SearchFilter.Operator.EQ, selMaa21003);
+		}
 		page.setSort(Sort.by(Sort.Direction.DESC,"maa21006"));
 		page = maa21Service.queryPage(page);
 		
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
+        
+        System.out.println("param value 002="+selMaa21002+"  003="+selMaa21003);
         
 		return Rets.success(page);
 	}
