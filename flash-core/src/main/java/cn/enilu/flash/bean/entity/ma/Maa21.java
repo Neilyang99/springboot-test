@@ -44,10 +44,11 @@ public class Maa21 extends BaseEntity {
 	private int maa21020; //尾款%
 	private int maa21021; //資料狀態
 	private String maa21022; //主要負責項目
-	private String maa21023; //發出者工號
-	private String maa21024; //發出日期時間
-	private String maa21025; //確認者工號
-	private String maa21026; //確認日期時間
+	private String maa21023; //主要工程項目
+	private String maa21024; //發出者工號
+	private String maa21025; //發出日期時間
+	private String maa21026; //確認者工號
+	private String maa21027; //確認日期時間
 	
 	
 }
