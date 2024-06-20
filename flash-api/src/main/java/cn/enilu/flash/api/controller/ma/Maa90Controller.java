@@ -48,6 +48,12 @@ public class Maa90Controller extends BaseController{
 		return Rets.success(page);
 	}
 	
+	@RequestMapping(value = "/selectList",method = RequestMethod.GET)
+	public Object selectList() {
+		//
+		return Rets.success(maa90Service.getDataForSelection());
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa90 maObj) {
 		if(maObj.getId() == null) {
