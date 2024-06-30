@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +18,8 @@ import cn.enilu.flash.bean.entity.ma.Maa00;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa00Service;
+import cn.enilu.flash.service.ma.Maa01Service;
+import cn.enilu.flash.service.ma.Maa01aService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
@@ -27,6 +31,10 @@ public class Maa00Controller extends BaseController{
 
 	@Autowired
     private Maa00Service maa00Service;
+	@Autowired
+	private Maa01Service maa01Service;
+	@Autowired
+	private Maa01aService maa01aService;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -61,11 +69,35 @@ public class Maa00Controller extends BaseController{
 		return Rets.success();
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id) {
 		maa00Service.delete(id);
+		
+		maa01Service.deleteByMaa01002(id);
+		
+		maa01aService.deleteByMaa01a002(id);
+		
         return Rets.success();
     }
+	
+	@Transactional
+	@RequestMapping(value="/budgetConfirm",method = RequestMethod.GET)
+    public Object budgetConfirm(Long id,String status) {
+		
+		Maa00 obj = maa00Service.get(id);
+		if(obj.getMaa00027() > 0) {
+			obj.setMaa00040(status);
+			maa00Service.update(obj);
+			
+			maa01Service.updateBudgeConfirmByProject(id,status);
+			maa01aService.updateBudgeConfirmByProject(id,status);
+			
+			return Rets.success();
+		}else {
+			return Rets.failure("尚未編訂預算，無法確認。");
+		}
+	}
 	
 	
 }

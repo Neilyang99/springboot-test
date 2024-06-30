@@ -82,7 +82,7 @@ public class Maa01aController extends BaseController{
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
         
-		return Rets.success(list);
+		return Rets.success(page);
 	}
 	
 	@Transactional
@@ -95,7 +95,7 @@ public class Maa01aController extends BaseController{
 		}
 		
 		//更新mma01的小類別預算金額
-		maa01Service.updateBudgeAmountByMaa01004(maa01a.getMaa01a004());
+		maa01Service.updateBudgeAmountByMaa01004(maa01a.getMaa01a002(), maa01a.getMaa01a004());
 		
 		//更新工程案總預算
 		maa00Service.updateBudgeAmountByProject(maa01a.getMaa01a002());
@@ -136,7 +136,7 @@ public class Maa01aController extends BaseController{
 		maa01aService.delete(id);
 		
 		//更新mma01的小類別預算金額
-		maa01Service.updateBudgeAmountByMaa01004(lv2Id);
+		maa01Service.updateBudgeAmountByMaa01004(projectId, lv2Id);
 		
 		//更新工程案總預算
 		maa00Service.updateBudgeAmountByProject(projectId);

@@ -87,5 +87,35 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 	public int insertByNewProject(Long projectId) {
 		return repository.insertByNewProject(projectId);
 	}
+	
+	/**
+	 * 更新資料狀態
+	 * @param 工程案ID
+	 * @param 資料狀態
+	 * @return
+	 */
+	public int updateBudgeConfirmByProject(Long projectId, String status) {
+		return repository.updateBudgeConfirmByProject(projectId, status);
+	}
+	
+	/**
+	 * Maa01刪除時，同步刪除maa01a資料
+	 * @param projectId
+	 * @param lv1
+	 * @param lv2
+	 * @return
+	 */
+	public int delByMaa01(Long projectId, Long lv1, Long lv2) {
+		return repository.deleteByMaa01(projectId,lv1,lv2);
+	}
+	
+	/**
+	 * 刪除所有工程案資料
+	 * @param projectId
+	 * @return
+	 */
+	public int deleteByMaa01a002(Long projectId) {
+		return repository.deleteByMaa01a002(projectId);
+	}
 }
 

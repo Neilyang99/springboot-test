@@ -12,8 +12,8 @@ import cn.enilu.flash.dao.BaseRepository;
 public interface Maa01Repository  extends BaseRepository<Maa01,Long>{
 	
 	@Modifying
-	@Query(value="UPDATE maa01 a INNER JOIN (select maa01a002,maa01a003,maa01a004,SUM(maa01a017) amount from maa01a where maa01a004=?1 GROUP BY maa01a002,maa01a003,maa01a004) b ON a.maa01002=b.maa01a002 AND a.maa01003=b.maa01a003 AND a.maa01004=b.maa01a004 SET a.maa01012=b.amount WHERE a.maa01004=?1 ", nativeQuery=true)
-	int updateBudgeAmountByMaa01004(Long lv2Id);
+	@Query(value="UPDATE maa01 a INNER JOIN (select maa01a002,maa01a003,maa01a004,SUM(maa01a017) amount from maa01a where maa01a002=?1 and maa01a004=?2 GROUP BY maa01a002,maa01a003,maa01a004) b ON a.maa01002=b.maa01a002 AND a.maa01003=b.maa01a003 AND a.maa01004=b.maa01a004 SET a.maa01012=b.amount WHERE a.maa01002=?1 and a.maa01004=?2 ", nativeQuery=true)
+	int updateBudgeAmountByMaa01004(Long projectId, Long lv2Id);
 	
 	@Modifying
 	@Query(value="UPDATE maa01 a INNER JOIN (select maa01a002,maa01a003,maa01a004,SUM(maa01a017) amount from maa01a where maa01a002=?1 GROUP BY maa01a002,maa01a003,maa01a004) b ON a.maa01002=b.maa01a002 AND a.maa01003=b.maa01a003 AND a.maa01004=b.maa01a004 SET a.maa01012=b.amount WHERE a.maa01002=?1 ", nativeQuery=true)
@@ -31,5 +31,13 @@ public interface Maa01Repository  extends BaseRepository<Maa01,Long>{
 			"inner join maa00 d on d.id=?1 " + 
 			"WHERE d.id not in (select maa01002 from maa01) )", nativeQuery=true)
 	public int insertByNewProject(Long projectId);
+	
+	
+	@Modifying
+	@Query(value="UPDATE maa01 SET maa01019=?2 WHERE maa01002=?1 ", nativeQuery=true)
+	int updateBudgeConfirmByProject(Long projectId, String status);
+	
+	
+	int deleteByMaa01002(Long maa01002);
 	
 }

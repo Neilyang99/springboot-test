@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,9 @@ import cn.enilu.flash.bean.constant.factory.PageFactory;
 import cn.enilu.flash.bean.entity.ma.Maa01;
 import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.query.SearchFilter;
+import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
+import cn.enilu.flash.service.ma.Maa01aService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
@@ -29,6 +32,10 @@ public class Maa01Controller extends BaseController{
 
 	@Autowired
     private Maa01Service maa01Service;
+	@Autowired
+    private Maa01aService maa01aService;
+	@Autowired
+    private Maa00Service maa00Service;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -64,12 +71,17 @@ public class Maa01Controller extends BaseController{
 		
 	}
 	
+	@Transactional
 	@RequestMapping(method = RequestMethod.DELETE)
-    public Object remove(Long id) {
+    public Object remove(Long id,Long projectId,Long lv1,Long lv2) {
 		maa01Service.delete(id);
+		
+		maa01aService.delByMaa01(projectId, lv1, lv2);
+		//更新工程案總預算
+		maa00Service.updateBudgeAmountByProject(projectId);
+		
         return Rets.success();
     }
-	
 	
 	
 	

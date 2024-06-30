@@ -34,4 +34,14 @@ public interface Maa01aRepository  extends BaseRepository<Maa01a,Long>{
 			"  where d.id not in (select maa01a002 from maa01a) " + 
 			")", nativeQuery=true)
 	public int insertByNewProject(Long projectId);
+	
+	@Modifying
+	@Query(value="UPDATE maa01a SET maa01a025=?2,maa01a034=?2 WHERE maa01a002=?1 ", nativeQuery=true)
+	int updateBudgeConfirmByProject(Long projectId, String status);
+	
+	@Modifying
+	@Query(value="DELETE FROM maa01a WHERE maa01a002=?1 and maa01a003=?2 and maa01a004=?3 ", nativeQuery=true)
+	int deleteByMaa01(Long projectId, Long lv1, Long lv2);
+	
+	int deleteByMaa01a002(Long projectId);
 }
