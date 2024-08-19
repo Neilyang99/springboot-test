@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.enilu.flash.api.controller.BaseController;
 import cn.enilu.flash.bean.constant.factory.PageFactory;
+import cn.enilu.flash.bean.entity.ma.Maa00;
 import cn.enilu.flash.bean.entity.ma.Maa01a;
 import cn.enilu.flash.bean.entity.system.FileInfo;
 import cn.enilu.flash.bean.vo.front.Rets;
@@ -105,24 +106,25 @@ public class Maa01aController extends BaseController{
 	
 	@Transactional
 	@RequestMapping(value = "/inertByNewProject", method = RequestMethod.GET)
-	public Object insertByNewProject(Long projectId) {
+	public Object insertByNewProject(Long projectId, String buildTypeList) {
 		int count = maa01aService.checkByMaa01a002(projectId);
 		if(count == 0) {
 			
-			int cnt = 0; 
+			int cnt1 = 0; 
+			int cnt2 = 0;
 			//新增 maa01 from maa90&maa91
-			maa01Service.insertByNewProject(projectId);
+			cnt1 = maa01Service.insertByNewProject(projectId, buildTypeList);
 			//新增 maa01a from maa92
-			cnt = maa01aService.insertByNewProject(projectId);
+			cnt2 = maa01aService.insertByNewProject(projectId, buildTypeList);
 			//更新 maa01的預算金額
 			maa01Service.updateBudgeAmountByProject(projectId);
 			//更新工程案總預算
 			maa00Service.updateBudgeAmountByProject(projectId);
 			
-			if(cnt == 0) {
+			if(cnt1 == 0 && cnt2 == 0) {
 				return Rets.failure("預算項目新增失敗，請再次新增。");
 			}else {
-				return Rets.success("成功，總共新增 "+cnt+" 筆資料。");
+				return Rets.success("預算項目新增成功。");
 			}
 			
 		}else {

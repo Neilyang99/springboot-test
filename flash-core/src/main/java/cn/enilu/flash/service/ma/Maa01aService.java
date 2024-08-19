@@ -84,8 +84,21 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 	}
 	
 	//新工程案從預算項目(maa92)新增該工程的預算項目
-	public int insertByNewProject(Long projectId) {
-		return repository.insertByNewProject(projectId);
+	public int insertByNewProject(Long projectId, String buildTypeList) {
+		int cnt = 0;
+		if(buildTypeList.trim().equals("")) {
+			//全部的營建分類都要產生
+			cnt = repository.insertByNewProject(projectId);
+		}else {
+			//部分的營建分類要產生
+			String[] aryStr =buildTypeList.trim().split(",");
+			List<String> list = new ArrayList<String>();
+			for(String v : aryStr){
+				list.add(v);
+			}
+			cnt = repository.insertByNewProject(projectId, list);
+		}
+		return cnt;
 	}
 	
 	/**

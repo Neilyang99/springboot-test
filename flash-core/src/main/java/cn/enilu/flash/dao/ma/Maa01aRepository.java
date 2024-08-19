@@ -27,13 +27,24 @@ public interface Maa01aRepository  extends BaseRepository<Maa01a,Long>{
 	@Modifying
 	@Transactional
 	@Query(value="insert into maa01a (id,maa01a002,maa01a003,maa01a004,maa01a005,maa01a006,maa01a007,maa01a008,maa01a009,maa01a010,maa01a011,maa01a012,maa01a013,maa01a014,maa01a015,maa01a016,maa01a017,maa01a018,create_time,modify_time) " + 
-			"( select null,d.id projectId,maa92002,maa92003,a.id,maa92012,maa00002,maa00003,maa00004,maa90003,maa91005,maa92006,maa92007,maa92008,maa92009,maa92010,round(maa92009*maa92010),maa92011,NOW(),NOW() from maa92 a" + 
+			"( select null,d.id projectId,maa92002,maa92003,a.id,maa92012,maa00002,maa00003,maa00004,maa90003,maa91005,maa92006,maa92007,maa92008,maa92009,0,0,maa92011,NOW(),NOW() from maa92 a" + 
 			"  inner join maa90 b on a.maa92002=b.id" + 
 			"  inner join maa91 c on a.maa92003=c.id" + 
 			"  inner join maa00 d on d.id=?1" +
 			"  where d.id not in (select maa01a002 from maa01a) " + 
 			")", nativeQuery=true)
 	public int insertByNewProject(Long projectId);
+	
+	@Modifying
+	@Transactional
+	@Query(value="insert into maa01a (id,maa01a002,maa01a003,maa01a004,maa01a005,maa01a006,maa01a007,maa01a008,maa01a009,maa01a010,maa01a011,maa01a012,maa01a013,maa01a014,maa01a015,maa01a016,maa01a017,maa01a018,create_time,modify_time) " + 
+			"( select null,d.id projectId,maa92002,maa92003,a.id,maa92012,maa00002,maa00003,maa00004,maa90003,maa91005,maa92006,maa92007,maa92008,maa92009,0,0,maa92011,NOW(),NOW() from maa92 a" + 
+			"  inner join maa90 b on a.maa92002=b.id" + 
+			"  inner join maa91 c on a.maa92003=c.id" + 
+			"  inner join maa00 d on d.id=?1" +
+			"  where d.id not in (select maa01a002 from maa01a)  AND b.id in (?2) " + 
+			")", nativeQuery=true)
+	public int insertByNewProject(Long projectId, List<String> buildTypeList);
 	
 	@Modifying
 	@Query(value="UPDATE maa01a SET maa01a025=?2,maa01a034=?2 WHERE maa01a002=?1 ", nativeQuery=true)

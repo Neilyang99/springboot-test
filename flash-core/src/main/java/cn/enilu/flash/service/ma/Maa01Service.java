@@ -1,5 +1,6 @@
 package cn.enilu.flash.service.ma;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,21 @@ public class Maa01Service extends BaseService<Maa01,Long,Maa01Repository>{
 	}
 	
 	//新工程案從預算項目(maa91)新增該工程的預算項目
-	public int insertByNewProject(Long projectId) {
-		return dao.insertByNewProject(projectId);
+	public int insertByNewProject(Long projectId, String buildTypeList) {
+		int cnt = 0;
+		if(buildTypeList.trim().equals("")) {
+			//全部的營建分類都要產生
+			cnt = dao.insertByNewProject(projectId);
+		}else {
+			//部分的營建分類要產生
+			String[] aryStr =buildTypeList.trim().split(",");
+			List<String> list = new ArrayList<String>();
+			for(String v : aryStr){
+				list.add(v);
+			}
+			cnt = dao.insertByNewProject(projectId, list);
+		}
+		return cnt;
 	}
 	
 	/**
