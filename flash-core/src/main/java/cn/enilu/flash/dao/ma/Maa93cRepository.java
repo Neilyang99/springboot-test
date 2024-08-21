@@ -2,6 +2,7 @@ package cn.enilu.flash.dao.ma;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import cn.enilu.flash.bean.entity.ma.Maa93c;
@@ -15,5 +16,9 @@ public interface Maa93cRepository  extends BaseRepository<Maa93c,Long>{
 			+ "WHERE b.maa95013='Y' "
 			+ "ORDER BY b.maa95012", nativeQuery=false)
 	List<Object[]> getWorkItemListByVendor(Long vendorId);
+	
+	@Modifying
+	@Query(value="delete from maa93c where maa93c002=?1", nativeQuery=false)
+	int deleteByVendorId(Long vendorId);
 	
 }

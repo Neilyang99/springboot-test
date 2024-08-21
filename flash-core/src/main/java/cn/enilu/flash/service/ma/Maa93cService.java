@@ -18,6 +18,15 @@ public class Maa93cService extends BaseService<Maa93c,Long,Maa93cRepository>{
 	private Maa93cRepository dao;
 	
 	/**
+	 * 刪除承包商所有施工項目的資料
+	 * @param vendorId
+	 * @return
+	 */
+	public int deleteByVendor(Long vendorId) {
+		return dao.deleteByVendorId(vendorId);
+	}
+	
+	/**
 	 * 取出承包商所屬的施工項目
 	 * @param vendorId
 	 * @return Maa93cVo list
