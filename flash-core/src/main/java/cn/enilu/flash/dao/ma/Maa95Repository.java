@@ -16,4 +16,7 @@ public interface Maa95Repository  extends BaseRepository<Maa95,Long>{
 	@Query(value="UPDATE maa95 SET maa95013=?2 WHERE id=?1 ", nativeQuery=true)
 	int UpdateStatusById(Long id,String status);
 	
+	@Query(value="select count(1) from maa95 WHERE maa95013<>'N' and id<>?1 and maa95002=?2 ", nativeQuery=true)
+	int checkWorkItemName(Long id, String itemName);
+	
 }

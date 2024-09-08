@@ -56,13 +56,29 @@ public class Maa95Controller extends BaseController{
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa95 maObj) {
-		if(maObj.getId() == null) {
-			maa95Service.insert(maObj);
-		}else {
-			maa95Service.update(maObj);
-		}
+		String msg = "";
 		
-		return Rets.success();
+		if(maObj.getId() == null) {
+			int count = maa95Service.checkWorkItemName((long) 0, maObj.getMaa95002());
+			if(count > 0) {
+				msg = "此施作項目: "+maObj.getMaa95002()+" ，已經存在，請變更施作項目。";
+			}else {
+				maa95Service.insert(maObj);
+			}
+			
+		}else {
+			int count = maa95Service.checkWorkItemName(maObj.getId(), maObj.getMaa95002());
+			if(count > 0) {
+				msg = "此施作項目: "+maObj.getMaa95002()+" ，已經存在，請變更施作項目。";
+			}else {
+				maa95Service.update(maObj);
+			}
+		}
+		if(msg == "") {
+			return Rets.success();
+		}else {
+			return Rets.failure(msg);
+		}
 	}
 	
 	@Transactional

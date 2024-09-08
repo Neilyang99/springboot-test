@@ -25,6 +25,15 @@ public class Maa95Service extends BaseService<Maa95,Long,Maa95Repository>{
 		dao.UpdateStatusById(id, "N");
 	}	
 	
+	/**
+	 * 檢查施作項目名稱是否重複
+	 * @param id 
+	 * @param workItemName 施作項目名稱
+	 * @return 
+	 */
+	public int checkWorkItemName(Long id, String workItemName) {
+		return dao.checkWorkItemName(id, workItemName);
+	}
 	
 	/**
 	 * 取出有效的清單:下拉選單用
