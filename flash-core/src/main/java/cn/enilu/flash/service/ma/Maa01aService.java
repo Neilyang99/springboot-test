@@ -102,6 +102,25 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 	}
 	
 	/**
+	 * 根據工程案更新預算金額(整批產生預算時使用)
+	 * @param Project Id
+	 * @return
+	 */
+	public int updateBudgeAmountByProject(Long projectId) {
+		return repository.updateBudgeAmountByProject(projectId);
+	}
+	
+	/**
+	 * 根據工程案與預算項目更新預算金額
+	 * @param Project Id
+	 * @param item Id
+	 * @return
+	 */
+	public int updateAmountByProjectAndItem(Long projectId, Long itemId) {
+		return repository.updateAmountByProjectAndItem(projectId, itemId);
+	}
+	
+	/**
 	 * 更新資料狀態
 	 * @param 工程案ID
 	 * @param 資料狀態
@@ -129,6 +148,15 @@ public class Maa01aService extends BaseService<Maa01a,Long,Maa01aRepository>{
 	 */
 	public int deleteByMaa01a002(Long projectId) {
 		return repository.deleteByMaa01a002(projectId);
+	}
+	
+	/**
+	 * 更新是否有施工項目資料
+	 * @param itemId
+	 * @return
+	 */
+	public int updateWorkItemFlag(Long projectId, Long itemId) {
+		return repository.updateWorkItemFlag(projectId, itemId);
 	}
 }
 

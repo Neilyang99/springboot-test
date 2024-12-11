@@ -21,6 +21,7 @@ import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
+import cn.enilu.flash.service.ma.Maa01bService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
@@ -36,6 +37,8 @@ public class Maa01Controller extends BaseController{
     private Maa01aService maa01aService;
 	@Autowired
     private Maa00Service maa00Service;
+	@Autowired
+    private Maa01bService maa01bService;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -77,6 +80,7 @@ public class Maa01Controller extends BaseController{
 		maa01Service.delete(id);
 		
 		maa01aService.delByMaa01(projectId, lv1, lv2);
+		maa01bService.delByMaa01(projectId, lv1, lv2);
 		//更新工程案總預算
 		maa00Service.updateBudgeAmountByProject(projectId);
 		

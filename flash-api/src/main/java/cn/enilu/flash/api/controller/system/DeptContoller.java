@@ -40,6 +40,12 @@ public class DeptContoller extends BaseController {
         List<DeptNode> list = deptService.queryAllNode();
         return Rets.success(list);
     }
+    
+    @RequestMapping(value = "/getCompany",method = RequestMethod.GET)
+    public Object getCompany() {
+    	List<Dept> list = deptService.getCompany();
+    	return Rets.success(list);
+    }
     @RequestMapping(method = RequestMethod.POST)
     @BussinessLog(value = "编辑部门", key = "simplename", dict = DeptDict.class)
     @RequiresPermissions(value = {Permission.DEPT_EDIT})

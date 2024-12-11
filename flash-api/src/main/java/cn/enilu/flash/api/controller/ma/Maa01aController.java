@@ -25,6 +25,7 @@ import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
+import cn.enilu.flash.service.ma.Maa01bService;
 import cn.enilu.flash.service.system.FileService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.Maps;
@@ -47,6 +48,9 @@ public class Maa01aController extends BaseController{
 	
 	@Autowired
     private FileService fileService;
+	
+	@Autowired
+    private Maa01bService maa01bService;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -112,10 +116,16 @@ public class Maa01aController extends BaseController{
 			
 			int cnt1 = 0; 
 			int cnt2 = 0;
+			int cnt3 = 0;
 			//新增 maa01 from maa90&maa91
 			cnt1 = maa01Service.insertByNewProject(projectId, buildTypeList);
 			//新增 maa01a from maa92
 			cnt2 = maa01aService.insertByNewProject(projectId, buildTypeList);
+			//新增 maa01b from maa92a
+			cnt3 = maa01bService.insertByNewProject(projectId, buildTypeList);
+			
+			//更新 maa01a 的預算金額
+			maa01aService.updateBudgeAmountByProject(projectId);
 			//更新 maa01的預算金額
 			maa01Service.updateBudgeAmountByProject(projectId);
 			//更新工程案總預算
@@ -136,6 +146,7 @@ public class Maa01aController extends BaseController{
 	@RequestMapping(method = RequestMethod.DELETE)
     public Object remove(Long id, Long projectId, Long lv2Id) {
 		maa01aService.delete(id);
+		maa01bService.delByMaa01a(id);//第三階刪除，同步刪除底下的施作項目
 		
 		//更新mma01的小類別預算金額
 		maa01Service.updateBudgeAmountByMaa01004(projectId, lv2Id);

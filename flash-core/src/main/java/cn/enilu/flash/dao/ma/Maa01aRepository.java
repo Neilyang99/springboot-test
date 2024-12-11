@@ -28,10 +28,10 @@ public interface Maa01aRepository  extends BaseRepository<Maa01a,Long>{
 	@Transactional
 	@Query(value="insert into maa01a (id,maa01a002,maa01a003,maa01a004,maa01a005,maa01a006,maa01a007,maa01a008,maa01a009,maa01a010,maa01a011,maa01a012,maa01a013,maa01a014,maa01a015,maa01a016,maa01a017,maa01a018,create_time,modify_time) " + 
 			"( select null,d.id projectId,maa92002,maa92003,a.id,maa92012,maa00002,maa00003,maa00004,maa90003,maa91005,maa92006,maa92007,maa92008,maa92009,0,0,maa92011,NOW(),NOW() from maa92 a" + 
-			"  inner join maa90 b on a.maa92002=b.id" + 
-			"  inner join maa91 c on a.maa92003=c.id" + 
+			"  inner join maa90 b on a.maa92002=b.id and maa90005='Y'" + 
+			"  inner join maa91 c on a.maa92003=c.id and maa91007='Y'" + 
 			"  inner join maa00 d on d.id=?1" +
-			"  where d.id not in (select maa01a002 from maa01a) " + 
+			"  where maa92013='Y' and d.id not in (select maa01a002 from maa01a) " + 
 			")", nativeQuery=true)
 	public int insertByNewProject(Long projectId);
 	
@@ -39,20 +39,45 @@ public interface Maa01aRepository  extends BaseRepository<Maa01a,Long>{
 	@Transactional
 	@Query(value="insert into maa01a (id,maa01a002,maa01a003,maa01a004,maa01a005,maa01a006,maa01a007,maa01a008,maa01a009,maa01a010,maa01a011,maa01a012,maa01a013,maa01a014,maa01a015,maa01a016,maa01a017,maa01a018,create_time,modify_time) " + 
 			"( select null,d.id projectId,maa92002,maa92003,a.id,maa92012,maa00002,maa00003,maa00004,maa90003,maa91005,maa92006,maa92007,maa92008,maa92009,0,0,maa92011,NOW(),NOW() from maa92 a" + 
-			"  inner join maa90 b on a.maa92002=b.id" + 
-			"  inner join maa91 c on a.maa92003=c.id" + 
+			"  inner join maa90 b on a.maa92002=b.id and maa90005='Y'" + 
+			"  inner join maa91 c on a.maa92003=c.id and maa91007='Y'" + 
 			"  inner join maa00 d on d.id=?1" +
-			"  where d.id not in (select maa01a002 from maa01a)  AND b.id in (?2) " + 
+			"  where maa92013='Y' and d.id not in (select maa01a002 from maa01a)  AND b.id in (?2) " + 
 			")", nativeQuery=true)
 	public int insertByNewProject(Long projectId, List<String> buildTypeList);
 	
 	@Modifying
+	@Query(value="update maa01a a inner join "
+			+ "(select maa01b002,maa01b003,maa01b004,maa01b005,sum(maa01b011) price from maa01b "
+			+ "	 where maa01b002=?1 "
+			+ "  group by maa01b002,maa01b003,maa01b004,maa01b005"
+			+ ") b on a.maa01a002=b.maa01b002 and a.maa01a003=b.maa01b003 and a.maa01a004=b.maa01b004 and a.maa01a005=b.maa01b005 "
+			+ "set a.maa01a016=b.price,a.maa01a017=ROUND(a.maa01a015*b.price),a.maa01a029='Y'  "
+			+ "where a.maa01a002=?1 ", nativeQuery=true)
+	//注意此method只能用於批次產生預算資料使用，因為maa01a005=maa01b005的限制
+	public int updateBudgeAmountByProject(Long projectId);
+	
+	@Modifying
+	@Query(value="update maa01a a LEFT join "
+			+ "(select maa01b002,maa01b003,maa01b004,maa01b007,sum(maa01b011) price from maa01b "
+			+ "	 where maa01b002=?1 and maa01b007=?2 "
+			+ "  group by maa01b002,maa01b003,maa01b004,maa01b007"
+			+ ") b on a.maa01a002=b.maa01b002 and a.maa01a003=b.maa01b003 and a.maa01a004=b.maa01b004 and a.id=b.maa01b007 "
+			+ "set a.maa01a016=IFNULL(b.price,0),a.maa01a017=IFNULL(ROUND(a.maa01a015*b.price),0),a.maa01a029=IF(ISNULL(b.price),'','Y')  "
+			+ "where a.id=?2 ", nativeQuery=true)
+	public int updateAmountByProjectAndItem(Long projectId, Long itemId);
+	
+	@Modifying
+	@Query(value="UPDATE maa01a SET maa01a029='' WHERE id=?2 and id not in (select maa01b007 from maa01b where maa01b002=?1 and maa01b007=?2)", nativeQuery=true)
+	public int updateWorkItemFlag(Long projectId, Long itemId );
+	
+	@Modifying
 	@Query(value="UPDATE maa01a SET maa01a025=?2,maa01a034=?2 WHERE maa01a002=?1 ", nativeQuery=true)
-	int updateBudgeConfirmByProject(Long projectId, String status);
+	public int updateBudgeConfirmByProject(Long projectId, String status);
 	
 	@Modifying
 	@Query(value="DELETE FROM maa01a WHERE maa01a002=?1 and maa01a003=?2 and maa01a004=?3 ", nativeQuery=true)
-	int deleteByMaa01(Long projectId, Long lv1, Long lv2);
+	public int deleteByMaa01(Long projectId, Long lv1, Long lv2);
 	
-	int deleteByMaa01a002(Long projectId);
+	public int deleteByMaa01a002(Long projectId);
 }

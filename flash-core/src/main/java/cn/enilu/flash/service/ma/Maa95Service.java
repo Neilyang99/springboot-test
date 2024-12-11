@@ -57,4 +57,13 @@ public class Maa95Service extends BaseService<Maa95,Long,Maa95Repository>{
 		return list;
 	}
 	
+	/**
+	 * 取出有效的清單:下拉選單用
+	 * @return MaaVo List
+	 */
+	public List<Maa95> getSelectList() {
+		
+		return dao.findByMaa95013("Y");
+	}
+	
 }

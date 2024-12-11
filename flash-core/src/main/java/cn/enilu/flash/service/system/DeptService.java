@@ -95,6 +95,14 @@ public class DeptService extends BaseService<Dept,Long,DeptRepository> {
 
     }
 
+    /**
+     * 取出第一階資料
+     * @return
+     */
+    public List<Dept> getCompany() {
+    	List<Dept> list = deptRepository.findByPid((long) 0);
+    	return list;
+    }
 
 
 }

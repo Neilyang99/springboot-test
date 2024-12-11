@@ -20,6 +20,7 @@ import cn.enilu.flash.bean.vo.query.SearchFilter;
 import cn.enilu.flash.service.ma.Maa00Service;
 import cn.enilu.flash.service.ma.Maa01Service;
 import cn.enilu.flash.service.ma.Maa01aService;
+import cn.enilu.flash.service.ma.Maa01bService;
 import cn.enilu.flash.utils.BeanUtil;
 import cn.enilu.flash.utils.StringUtil;
 import cn.enilu.flash.utils.factory.Page;
@@ -35,16 +36,36 @@ public class Maa00Controller extends BaseController{
 	private Maa01Service maa01Service;
 	@Autowired
 	private Maa01aService maa01aService;
+	@Autowired
+	private Maa01bService maa01bService;
 	
 	
 	@RequestMapping(value = "/list",method = RequestMethod.GET)
-	public Object list(String name) {
+	public Object list(String selMaa00004) {
 		Page<Maa00> page = new PageFactory<Maa00>().defaultPage();
-		if(StringUtil.isNullOrEmpty(name)) {
+		if(StringUtil.isNullOrEmpty(selMaa00004)) {
 			
 		}else {
-			page.addFilter( "maa00004", SearchFilter.Operator.LIKE, name);
+			page.addFilter( "maa00004", SearchFilter.Operator.LIKE, selMaa00004);
 		}
+		page = maa00Service.queryPage(page);
+		List list = BeanUtil.objectsToMaps(page.getRecords());
+        page.setRecords(list);
+        
+		return Rets.success(page);
+	}
+	
+	@RequestMapping(value = "/budgetConfirmList",method = RequestMethod.GET)
+	public Object budgetConfirmList(String selMaa00004) {
+		Page<Maa00> page = new PageFactory<Maa00>().defaultPage();
+		if(StringUtil.isNullOrEmpty(selMaa00004)) {
+			
+		}else {
+			page.addFilter( "maa00004", SearchFilter.Operator.LIKE, selMaa00004);
+		}
+		
+		page.addFilter( "maa00040", SearchFilter.Operator.EQ, "Y");//預算書確認
+		
 		page = maa00Service.queryPage(page);
 		List list = BeanUtil.objectsToMaps(page.getRecords());
         page.setRecords(list);
@@ -78,6 +99,8 @@ public class Maa00Controller extends BaseController{
 		
 		maa01aService.deleteByMaa01a002(id);
 		
+		maa01bService.deleteByMaa01b002(id);
+		
         return Rets.success();
     }
 	
@@ -92,6 +115,7 @@ public class Maa00Controller extends BaseController{
 			
 			maa01Service.updateBudgeConfirmByProject(id,status);
 			maa01aService.updateBudgeConfirmByProject(id,status);
+			maa01bService.updateBudgeConfirmByProject(id,status);
 			
 			return Rets.success();
 		}else {

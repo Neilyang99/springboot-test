@@ -59,4 +59,14 @@ public class Maa93cService extends BaseService<Maa93c,Long,Maa93cRepository>{
 		return list;
 	}
 	
+	/**
+	 * 取出定義的工作細項的筆數
+	 * @param vendorId
+	 * @return 筆數
+	 */
+	public int getWorkItemCountByVendor(Long vendorId){
+		
+		return dao.getWorkItemCountByVendor(vendorId);
+	}
+	
 }

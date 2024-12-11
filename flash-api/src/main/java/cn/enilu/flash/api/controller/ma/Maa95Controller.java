@@ -53,6 +53,11 @@ public class Maa95Controller extends BaseController{
 		return Rets.success(maa95Service.getValueList());
 		
 	}
+	@RequestMapping(value = "/selectListAllField",method = RequestMethod.GET)
+	public Object selectListAllField() {
+		return Rets.success(maa95Service.getSelectList());
+		
+	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Object add(@ModelAttribute @Valid Maa95 maObj) {
