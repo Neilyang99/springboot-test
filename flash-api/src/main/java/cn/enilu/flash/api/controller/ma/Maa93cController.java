@@ -28,6 +28,11 @@ public class Maa93cController extends BaseController{
 		return Rets.success(maa93cService.getWorkItemByVendor(vendorId));
 	}
 	
+	@RequestMapping(value = "/getVendorWorkItem",method = RequestMethod.GET)
+	public Object getVendorWorkItem(Long vendorId) {
+		return Rets.success(maa93cService.getVendorWorkItem(vendorId));
+	}
+	
 	
 	@Transactional
 	@RequestMapping(method = RequestMethod.POST)

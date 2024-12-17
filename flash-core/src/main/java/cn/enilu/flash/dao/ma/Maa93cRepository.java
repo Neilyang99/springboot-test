@@ -26,4 +26,11 @@ public interface Maa93cRepository  extends BaseRepository<Maa93c,Long>{
 	@Query(value="delete from maa93c where maa93c002=?1", nativeQuery=false)
 	int deleteByVendorId(Long vendorId);
 	
+	
+	@Query(value="SELECT a.id,a.maa93004,c.maa95002 from maa93 a inner join maa93c b on a.id=b.maa93c002 " + 
+			"inner join maa95 c on b.maa93c003=c.id and c.maa95013='Y' " + 
+			"where a.id=?1 " + 
+			"order by c.maa95012", nativeQuery=false)
+	List<Object[]> getVendorWorkItem(Long vendorId);
+	
 }

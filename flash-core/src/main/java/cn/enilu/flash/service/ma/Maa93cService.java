@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cn.enilu.flash.bean.entity.ma.Maa93c;
 import cn.enilu.flash.bean.vo.ma.Maa93cVo;
+import cn.enilu.flash.bean.vo.ma.MaaVo;
 import cn.enilu.flash.dao.ma.Maa93cRepository;
 import cn.enilu.flash.service.BaseService;
 
@@ -57,6 +58,30 @@ public class Maa93cService extends BaseService<Maa93c,Long,Maa93cRepository>{
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 取出承包商所屬的施工項目
+	 * @param vendorId
+	 * @return String
+	 */
+	public String getVendorWorkItem(Long vendorId){
+		String txt = "";
+		List<Object[]> objList = dao.getVendorWorkItem(vendorId);
+		for(Object[] obj : objList) {
+			if(!obj[2].equals("")) {
+				txt = txt + obj[2]+", ";
+			}
+		}
+		
+		if(txt.length() > 1 ) {
+			txt = txt.substring(0,txt.length()-2);
+		}else {
+			txt = "";
+		}
+		
+		
+		return txt;
 	}
 	
 	/**
