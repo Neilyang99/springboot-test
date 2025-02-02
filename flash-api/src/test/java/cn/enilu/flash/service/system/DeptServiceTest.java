@@ -22,7 +22,7 @@ public class DeptServiceTest extends BaseApplicationStartTest {
     public void tree()     {
         List<ZTreeNode> list = deptService.tree();
         for(ZTreeNode treeNode:list) {
-            System.out.println(Json.toJson(treeNode));
+            //System.out.println(Json.toJson(treeNode));
         }
     }
 

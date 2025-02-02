@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
  * @author enilu
  */
 @Entity(name="t_sys_dept")
-@Table(appliesTo = "t_sys_dept",comment = "部门")
+@Table(appliesTo = "t_sys_dept",comment = "部門")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class Dept extends BaseEntity {
@@ -27,10 +27,10 @@ public class Dept extends BaseEntity {
     @Column
     private String pids;
     @Column
-    @NotBlank(message = "部门简称不能为空")
+    @NotBlank(message = "部門簡稱不能空白")
     private String simplename;
     @Column
-    @NotBlank(message = "部门全称不能为空")
+    @NotBlank(message = "部門全稱不能空白")
     private String fullname;
     @Column
     private String tips;

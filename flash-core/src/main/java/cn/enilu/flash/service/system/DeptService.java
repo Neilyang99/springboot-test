@@ -1,6 +1,7 @@
 package cn.enilu.flash.service.system;
 
 import cn.enilu.flash.bean.entity.system.Dept;
+import cn.enilu.flash.bean.vo.ma.MaaVo;
 import cn.enilu.flash.bean.vo.node.DeptNode;
 import cn.enilu.flash.bean.vo.node.ZTreeNode;
 import cn.enilu.flash.dao.system.DeptRepository;
@@ -101,6 +102,25 @@ public class DeptService extends BaseService<Dept,Long,DeptRepository> {
      */
     public List<Dept> getCompany() {
     	List<Dept> list = deptRepository.findByPid((long) 0);
+    	return list;
+    }
+    
+    /**
+     * 取出付款公司清單
+     * @return
+     */
+    public List<MaaVo> getCompanyByMaa(){
+    	List<MaaVo> list = new ArrayList<MaaVo>();
+    	List<Dept> depList = this.getCompany();
+    	
+    	for(Dept obj : depList) {
+    		MaaVo v = new MaaVo();
+			v.setKey(obj.getTips());//id
+			v.setName(obj.getSimplename());//名稱
+			v.setValue(""+obj.getId());//統編
+			
+			list.add(v);
+    	}
     	return list;
     }
 

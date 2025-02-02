@@ -1,31 +1,17 @@
-package cn.enilu.flash.bean.entity.ma;
+package cn.enilu.flash.bean.vo.ma;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-
-import org.hibernate.annotations.Table;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import cn.enilu.flash.bean.entity.BaseEntity;
 import lombok.Data;
 
-@Entity(name = "maa22")
-@Table(appliesTo = "maa22",comment = "合約明細檔")
 @Data
-@EntityListeners(AuditingEntityListener.class)
-public class Maa22 extends BaseEntity {
+/**
+ * Maa22 value object
+ *
+ * @author YWG
+ */
+public class Maa22Vo {
 	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6739300324928942072L;
-	
-	@Id
-	@Column(name = "id")
-	private Long id; //資料表唯一識別碼
+   
+private Long id; //資料表唯一識別碼
 	
 	private Long maa22002; //合約唯一識別碼
 	private int maa22003; //項次
@@ -47,5 +33,9 @@ public class Maa22 extends BaseEntity {
 	private String maa22019; //確認者工號
 	private String maa22020; //確認日期時間
 	private Long maa22021; //工程預算子項目資料唯一識別碼
-	
+	private String createBy; //建立人工號
+	private String createTime; //建立日期時間
+	private String modifyBy; //異動人工號
+	private String modifyTime; //異動日期時間
+
 }
