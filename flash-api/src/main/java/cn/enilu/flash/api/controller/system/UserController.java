@@ -44,10 +44,12 @@ public class UserController extends BaseController {
     @RequiresPermissions(value = {Permission.USER})
     public Object list(@RequestParam(required = false) String account,
                        @RequestParam(required = false) String name,
-                       @RequestParam(required = false) String idDept){
+                       @RequestParam(required = false) String idDept,
+                       @RequestParam(required = false) Integer status){
         Page page = new PageFactory().defaultPage();
         page.addFilter( "name", SearchFilter.Operator.LIKE, name);
         page.addFilter( "account", SearchFilter.Operator.LIKE, account);
+        page.addFilter("status", status);
 
         page.addFilter( "status",SearchFilter.Operator.GT,0);
         page = userService.queryPage(page);
@@ -108,15 +110,28 @@ public class UserController extends BaseController {
         userService.update(user);
         return Rets.success();
     }
-    @BussinessLog(value = "冻结/解冻账号", key = "userId", dict = UserDict.class)
-    @RequestMapping(value="changeStatus",method = RequestMethod.GET)
+    @BussinessLog(value = "停用帳戶", key = "userId", dict = UserDict.class)
+    @RequestMapping(value="/changeStatus",method = RequestMethod.GET)
     @RequiresPermissions(value = {Permission.USER_EDIT})
     public Object changeStatus(@RequestParam Long userId){
         if (userId==null) {
             throw new ApplicationException(BizExceptionEnum.REQUEST_NULL);
         }
+        if (userId.intValue() == 1) {
+            return Rets.failure("不能停用管理者帳戶");
+        }
         User user = userService.get(userId);
         user.setStatus(user.getStatus().intValue() == ManagerStatus.OK.getCode()?ManagerStatus.FREEZED.getCode():ManagerStatus.OK.getCode());
+        userService.update(user);
+        return Rets.success();
+    }
+    
+    @BussinessLog(value = "重置密码", key = "userId")
+    @RequestMapping(value="/resetPassword",method = RequestMethod.GET)
+    @RequiresPermissions(value = {Permission.USER_EDIT})
+    public Object resetPassword(Long userId){
+        User user = userService.get(userId);
+        user.setPassword(MD5.md5("123456", user.getSalt()));
         userService.update(user);
         return Rets.success();
     }

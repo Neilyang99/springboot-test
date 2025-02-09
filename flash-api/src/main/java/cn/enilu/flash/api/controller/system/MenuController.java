@@ -13,6 +13,7 @@ import cn.enilu.flash.bean.vo.front.Rets;
 import cn.enilu.flash.bean.vo.node.MenuNode;
 import cn.enilu.flash.bean.vo.node.Node;
 import cn.enilu.flash.bean.vo.node.RouterMenu;
+import cn.enilu.flash.bean.vo.node.TreeSelectNode;
 import cn.enilu.flash.bean.vo.node.ZTreeNode;
 import cn.enilu.flash.cache.TokenCache;
 import cn.enilu.flash.service.system.LogObjectHolder;
@@ -59,6 +60,30 @@ public class MenuController extends BaseController {
     public Object list() {
         List<MenuNode> list = menuService.getMenus();
         return Rets.success(list);
+    }
+    @RequestMapping(value = "/tree", method = RequestMethod.GET)
+    public Object tree() {
+        List<MenuNode> list = menuService.getMenus();
+        List<TreeSelectNode> treeSelectNodes = Lists.newArrayList();
+        for (MenuNode menuNode : list) {
+            TreeSelectNode tsn = transfer(menuNode);
+            treeSelectNodes.add(tsn);
+        }
+        return Rets.success(treeSelectNodes);
+    }
+    
+    public TreeSelectNode transfer(MenuNode node) {
+        TreeSelectNode tsn = new TreeSelectNode();
+        tsn.setId(node.getCode());
+        tsn.setLabel(node.getName());
+        if (node.getChildren() != null && !node.getChildren().isEmpty()) {
+            List<TreeSelectNode> children = Lists.newArrayList();
+            for (MenuNode child : node.getChildren()) {
+                children.add(transfer(child));
+            }
+            tsn.setChildren(children);
+        }
+        return tsn;
     }
 
     @RequestMapping(method = RequestMethod.POST)
